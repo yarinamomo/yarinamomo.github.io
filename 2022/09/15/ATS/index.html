@@ -4,19 +4,34 @@
   <meta charset="utf-8">
   
   
-  <title>Processing Megapixel Images with Deep Attention-Sampling Models | Something about Learning</title>
+  <title>Explanation on Paper &#34;Processing Megapixel Images with Deep Attention-Sampling Models&#34; | Something about Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Machine Learning, Computer Vision, Bioinformatics, Statics">
+  <meta name="description" content="Welcome! Recently this paper, Processing Megapixel Images with Deep Attention-Sampling Models by Angelos Katharopoulos and Francois Fleuret, which was published on ICML (International Conference on Ma">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Processing Megapixel Images with Deep Attention-Sampling Models">
+<meta property="og:title" content="Explanation on Paper &quot;Processing Megapixel Images with Deep Attention-Sampling Models&quot;">
 <meta property="og:url" content="https://yarinamomo.github.io/2022/09/15/ATS/index.html">
 <meta property="og:site_name" content="Something about Learning">
-<meta property="og:description" content="Machine Learning, Computer Vision, Bioinformatics, Statics">
+<meta property="og:description" content="Welcome! Recently this paper, Processing Megapixel Images with Deep Attention-Sampling Models by Angelos Katharopoulos and Francois Fleuret, which was published on ICML (International Conference on Ma">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-09-15T20:36:05.000Z">
-<meta property="article:modified_time" content="2022-09-15T20:36:05.717Z">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//09/15/ATS/background-downsample.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//background-downsample.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//background-DeepMIL.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//method-outline.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//method-dist-ex.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-mnist-data.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-mnist-res.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-mnist-res2.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-histo-data.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-histo-res.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-histo-res2.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-speed-data.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-speed-res.png">
+<meta property="og:image" content="https://yarinamomo.github.io/.io//result-speed-res2.png">
+<meta property="article:published_time" content="2022-09-15T20:36:05.717Z">
+<meta property="article:modified_time" content="2022-09-16T11:55:57.723Z">
 <meta property="article:author" content="Yiran Wang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yarinamomo.github.io/.io//09/15/ATS/background-downsample.png">
   
     <link rel="alternate" href="/atom.xml" title="Something about Learning" type="application/atom+xml">
   
@@ -76,7 +91,7 @@
         <section id="main"><article id="post-ATS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/09/15/ATS/" class="article-date">
-  <time class="dt-published" datetime="2022-09-15T20:36:05.000Z" itemprop="datePublished">2022-09-15</time>
+  <time class="dt-published" datetime="2022-09-15T20:36:05.717Z" itemprop="datePublished">2022-09-15</time>
 </a>
     
   </div>
@@ -87,7 +102,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Processing Megapixel Images with Deep Attention-Sampling Models
+      Explanation on Paper &#34;Processing Megapixel Images with Deep Attention-Sampling Models&#34;
     </h1>
   
 
@@ -95,11 +110,107 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>Welcome! Recently this paper, <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1905.03711">Processing Megapixel Images with Deep Attention-Sampling Models</a> by Angelos Katharopoulos and Francois Fleuret, which was published on ICML (International Conference on Machine Learning) in 2019 has caught my eyes. I find it very interesting and can provide great help for deep learning tasks on large datasets with high resolution images, especially for small groups or individual researchers. It is also well written and thoroughly proved from mathematical aspect. I will present this paper and try to make it easier and more friendly to read (the mathematical formulations and proves will not be repeated here. In the meanwhile, for those who are interested, it is recommended to read the paper since they are very well presented in the paper). Presenting is also a way of learning myself. </p>
+<h3 id="1-Background"><a href="#1-Background" class="headerlink" title="1. Background"></a>1. Background</h3><p>The motivation of this paper is to help with computer vision tasks with megapixel images. The traditional CNN architectures usually cannot operate directly on those high resolution images because of the limitation of computational and memory resources. </p>
+<h4 id="1-1-Down-Sample"><a href="#1-1-Down-Sample" class="headerlink" title="1.1 Down Sample"></a>1.1 Down Sample</h4><p>One common approach is to down sample the original images directly. But this may lead to loss of important information. For example, in the following picture, the traffic sign becomes unrecognizable in <em>b</em> after down sampling the original image <em>a</em>, compared to the traffic sign from the original scale <em>c</em>.</p>
+<!---
+![Illustration of down sample](/2022/09/15/ATS/background-downsample.png)
+-->
+<p><img src="/.io//09/15/ATS/background-downsample.png" alt="Illustration of down sample"></p>
+<p align="center"> <img width="80%" src="/.io//background-downsample.png"> </p>
+<p align="center"> Illustration of down sample </p>
+
+<h4 id="1-2-Deep-MIL"><a href="#1-2-Deep-MIL" class="headerlink" title="1.2 Deep MIL"></a>1.2 Deep MIL</h4><p>Another approach which is more relevant to this paper is to split the original image into patches with a fixed patch size first, and process them separately. This approach is called deep multiple instance learning or Deep MIL<a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v80/ilse18a.html"> Ilse et al., 2018</a>. </p>
+<p align="center"> <img width="80%" src="/.io//background-DeepMIL.png"> </p>
+<p align="center"> Illustration of DeepMIL </p>
+
+<p>Each patch can be seen as a part of the input image and it is in original scale so the details can be retained. Another good aspect of this approach is that it does not need patch annotations or labels which are usually not available or very expensive to get. But in this way, it may require to operate on every part which may waste computational resources on not important patches. </p>
+<p>Thus, in this paper, the aim is to propose a model that can handle large images more efficiently with much less computational resource requirements. More specifically, for this patches approach shown here, it would be more efficient if we can know which patches are more informative, and only process the few informative patches in the original scale instead of processing them all. Intuitively, it would be helpful if there is a way to pay more attention or weight on the patches of interest to select them.</p>
+<h3 id="2-Aim"><a href="#2-Aim" class="headerlink" title="2. Aim"></a>2. Aim</h3><p>Propose an end-to-end trainable model able to handle multi-megapixel images using a single GPU&#x2F;CPU.</p>
+<h3 id="3-Method-Outline"><a href="#3-Method-Outline" class="headerlink" title="3. Method - Outline"></a>3. Method - Outline</h3><p>Now I will introduce the proposed method in this paper. It is called attention sampling or ATS in short. The following shows the outline of the method.</p>
+<p align="center"> <img width="70%" src="/.io//method-outline.png"> </p>
+<p align="center"> The outline of the ATS method </p>
+
+<p>Given a large image, as mentioned before, it is computational efficient to down sample it first. But don’t worry, it is not going to process the image now since we don’t want to lose any details. It is instead to compute an attention distribution which can help decide which locations are more interesting. It is done by a rather light convolutional neural network. It basically will sign a weight or a probability, since it is a distribution, to every location of the image. For example, it may look like the following image. If we are to select two interesting patches out of all locations, we can simply choose the top two. </p>
+<p align="center"> <img width="30%" src="/.io//method-dist-ex.png"> </p>
+<p align="center"> The example of the attention distribution </p>
+
+<p>Then, the locations selected will be used to extract patches from the original images. We get two patches in the original scale with all the details they can have. The two patches are then fitted into another convolutional neural network which is the feature network to do the downstream task, for example to classify.</p>
+<p>For the attention distribution, the authors performed a Monte Carlo estimate. They sampled a small number of indices from the attention distribution. The sample was done by sampling without replacement to avoid sample the same indices. They also showed that feeding the sampled set to the second feature CNN is an unbiased estimator compared to using all indices to predict. More specifically, the sampling is proved to have the minimum variance by normalizing the features in terms of L2 norm. So that the network does not change because of the sampling. So for this, during implementation, an L2 normalization layer is to be added as the final layer in the feature networks. </p>
+<p>The two CNNs are trained together. And the model is proved to be differentiable and trainable. The detailed formulas and proves can be seen in the paper if interested.</p>
+<p>One thing to be mentioned is that the proposed model can be easily scaled up. Because the computational and memory requirements depend only on the pre-defined patch size and the number of selected patches.</p>
+<h3 id="4-Evaluation"><a href="#4-Evaluation" class="headerlink" title="4. Evaluation"></a>4. Evaluation</h3><p>To evaluate the proposed ATS model, a few baseline methods were used to compare with. They include: </p>
+<ul>
+<li>Traditional CNNs with different scales of down sampling</li>
+<li>Deep multiple instance learning or Deep MIL which will process every patch as we introduced previously</li>
+<li>Uniform sampling method or U-XX where the attention network is a uniform distribution and XX represents the number of selected patches</li>
+</ul>
+<p>They were compared with the proposed attention sampling or ATS-XX model where XX is the number of sampled patches selected.</p>
+<p>The metrics used to compare the performance include test error and computational and memory cost.</p>
+<p>As mentioned before, the computational and memory cost for the proposed model depend only on the pre-defined patch size and the number of selected patches. While the baseline models (the traditional CNNs and the DeepMIL) scale linearly with the size of the input images. This difference can be further verified in the later results.</p>
+<h3 id="5-Results"><a href="#5-Results" class="headerlink" title="5. Results"></a>5. Results</h3><p>The evaluation of this attention sampling method was tested on three tasks. </p>
+<h4 id="5-1-Megapixel-MNIST"><a href="#5-1-Megapixel-MNIST" class="headerlink" title="5.1 Megapixel MNIST"></a>5.1 Megapixel MNIST</h4><p>The first task is MINST digit classification. The dataset was generated automatically. Each image contains 50 patches with size equal to an MINST digit, among which, 5 digits are randomly positioned. 3 of the 5 digits belong to the same class and the other 2 to a random class. The rest are random noise. The following picture shows an example of the data samples:</p>
+<p align="center"> <img width="40%" src="/.io//result-mnist-data.png"> </p>
+<p align="center"> Data example - Megapixel MNIST </p>
+
+<p>The goal is to identify the digit with the most occurrences. In the case above, it should be 7.</p>
+<p>The methods used here are:</p>
+<ul>
+<li>Traditional CNN on the full size images</li>
+<li>The attention sampling method (ATS-XX) with 180x180 as the down sampled size (which results in 32400 patches in total) and each patch is 50x50</li>
+</ul>
+<p>The uniform sampling was omitted because it should not perform good since the large sampling space (32400). The Deep MIL was also omitted because exceeding GPU memory. </p>
+<p>The result can be seen as following. The ATS method was tested with the 5,10,25,50,100 patches selected to run on full scale.</p>
+<p align="center"> <img width="50%" src="/.io//result-mnist-res.png"> </p>
+<p align="center"> Result - Megapixel MNIST </p>
+
+<p>It shows that the ATS has lower error and required less time for all numbers of patch settings than the CNN model. For the ATS model itself, the more patches it selected, the less error it achieved and more time it needed. Overall, it shows that attention sampling processes high resolution images both faster and more accurately than the CNN baseline.</p>
+<p>Another important benefit is the interpretability the ATS achieved. The following shows the evolution of the attention distribution during training phase. </p>
+<p align="center"> <img width="80%" src="/.io//result-mnist-res2.png"> </p>
+<p align="center"> The evolution of the attention distribution - Megapixel MNIST </p>
+
+<p>The example image contains 3 digits and 3 noise. The three digits were marked red on the first image. Yellow means higher attention. At first, the attention distribution was like uniformly distributed as every position is equally colored. Then it learned to distinguish the digits and noise from empty space. And from epoch 20, the attention finds the three digits and keep following them afterwards.</p>
+<h4 id="5-2-Histopathology-images"><a href="#5-2-Histopathology-images" class="headerlink" title="5.2 Histopathology images"></a>5.2 Histopathology images</h4><p>The second experiment was evaluated on the colon cancer dataset to detect whether epithelial cells exist in a hematoxylin and eosin stained image. It is a binary classification problem. It will be classified as positive if at least one cell belongs to the epithelial class. </p>
+<p align="center"> <img width="40%" src="/.io//result-histo-data.png"> </p>
+<p align="center"> Data example - Histopathology image </p>
+
+<p>Attention distribution with uniform sampling, CNN, Deep MIL, and attention sampling were tested and compared. The results can be seen as the following table shows:</p>
+<p align="center"> <img width="80%" src="/.io//result-histo-res.png"> </p>
+<p align="center"> Result - Histopathology image </p>
+
+<p>As it shows on the table, the uniform sampling with 10 and 50 patches are clearly better than random guessing with 15.6% and 12.4% error rate on the test dataset. This because it only needs <strong>one</strong> epithelial cell to be classified as positive and it probably has much more than one. With the same number of selected patches,  the proposed method ATS achieved about 35% lower test error as expected since it should only focus on informative parts. Compare to the CNN and Deep MIL models, the ATS models perform equally well but much more faster and much less memory requirement.</p>
+<p>The following shows a visualization of learned attention distribution on a test image. Image <em>a</em> is the raw image, <em>b</em> shows the ground truth positions of the epithelial cells, <em>c</em> and <em>d</em> are the learned attention distribution of Deep MIL and ATS models. It was computed by multiplying each patch with a normalized attention value <em>w_i</em>. </p>
+<p align="center"> <img width="80%" src="/.io//result-histo-res2.png"> </p>
+<p align="center"> Learned attention distribution - Histopathology image </p>
+
+<p>It can be seen that both methods identify epithelial cells without having access to per-patch annotations. We can also see that the ATS method matches less well than the Deep MIL model. But since it is enough to find at least one epithelial cell to classify correctly, this may not affect the classification performance. However, ATS may be less helpful to detect regions of interest.</p>
+<h4 id="5-3-Speed-limit-sign-detection"><a href="#5-3-Speed-limit-sign-detection" class="headerlink" title="5.3 Speed limit sign detection"></a>5.3 Speed limit sign detection</h4><p>The last task is to classify whether a image contains no speed limit sign or a limit sign of 50,70 or 80.</p>
+<p align="center"> <img width="40%" src="/.io//result-speed-data.png"> </p>
+<p align="center"> Data example - Speed limit sign detection </p>
+
+<p>Similarly, attention distribution with uniform sampling, CNN, Deep MIL, and attention sampling were tested and compared. The results can be seen as below:</p>
+<p align="center"> <img width="80%" src="/.io//result-speed-res.png"> </p>
+<p align="center"> Result - Speed limit sign detection </p>
+
+<p>With uniform sampling, because only one or very few patches are informative, it is expected that the uniform models do not perform well. For CNN models with down sampled images, they fitted on the training dataset very well but were not able to generalize on the test dataset. It is also expected since the down sampled images are hard to see the traffic signs. For the not scaled CNN, it also failed to generalize. The paper didn’t explain why for this one. But it could be that the neural network was overfitting. For the Deep MIL and ATS models, we can see that the test results are comparable. Besides, the ATS only used 5 and 10 instead of 192 patches (which the Deep MIL used). Regarding the memory and time cost, ATS is much more efficient compared to the Deep MIL.</p>
+<p>The following picture shows the learned attention distribution of Deep MIL and ATS on a test image.</p>
+<p align="center"> <img width="80%" src="/.io//result-speed-res2.png"> </p>
+<p align="center"> Learned attention distribution - Speed limit sign detection </p>
+
+<p>The proposed ATS method located both signs with high probability, whereas the Deep MIL model locates both but only one was selected with high probability. </p>
+<h3 id="6-Conclusion"><a href="#6-Conclusion" class="headerlink" title="6. Conclusion"></a>6. Conclusion</h3><p>After going through what the paper has explained and achieved, the main conclusion of this paper can be draw as below:</p>
+<ul>
+<li>The proposed attention sampling method can efficiently process megapixel images in a single CPU&#x2F;GPU by only processing a few parts of the input images based on an attention distribution.</li>
+<li>The sampling with the attention distribution was proved to be the optimal approximation with minimum variance.</li>
+<li>The attention sampling model can also effectively identify the informative regions without patch-level annotation.</li>
+</ul>
+<h3 id="7-Personal-Thoughts"><a href="#7-Personal-Thoughts" class="headerlink" title="7. Personal Thoughts"></a>7. Personal Thoughts</h3><p>It is a very popular topic to deal with the computational problems raising in the deep learning tasks. This paper provided an interesting and helpful view. For people who want to implement or reproduce their work, the authors also provided a <a target="_blank" rel="noopener" href="https://github.com/idiap/attention-sampling">git repository</a>. </p>
+<p>There are also something need to be considered more when solving more complicated real world problem. For example, for object detection tasks with more than one size of targets (traffic lights, pedestrian, closer cars, far away cars, etc.), it would need to put more thoughts on how to decide on the down sample scale to learn the attention distribution and the patch size if it is possible to get the results once, or if there is a way to design a separate attention network which can be more suitable for different sizes of targets. Because if scaling too much, the smaller targets may disappear from the down sampled image, and if scale too little, the attention network may select too many locations relating to the same region for the larger targets, which will perhaps hurt the intention of reducing computational costs.</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://yarinamomo.github.io/2022/09/15/ATS/" data-id="cl83j44vs00007m5f7qg04mqf" data-title="Processing Megapixel Images with Deep Attention-Sampling Models" class="article-share-link">Share</a>
+      <a data-url="https://yarinamomo.github.io/2022/09/15/ATS/" data-id="cl83j44vs00007m5f7qg04mqf" data-title="Explanation on Paper &#34;Processing Megapixel Images with Deep Attention-Sampling Models&#34;" class="article-share-link">Share</a>
       
       
       
@@ -107,16 +218,6 @@
   </div>
   
     
-<nav id="article-nav">
-  
-  
-    <a href="/2022/09/15/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
-    </a>
-  
-</nav>
-
   
 </article>
 
@@ -150,11 +251,7 @@
       <ul>
         
           <li>
-            <a href="/2022/09/15/ATS/">Processing Megapixel Images with Deep Attention-Sampling Models</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/15/hello-world/">Hello World</a>
+            <a href="/2022/09/15/ATS/">Explanation on Paper &#34;Processing Megapixel Images with Deep Attention-Sampling Models&#34;</a>
           </li>
         
       </ul>
