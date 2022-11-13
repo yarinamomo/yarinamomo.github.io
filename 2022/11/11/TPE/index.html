@@ -15,12 +15,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/SMBO.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_pxy.png">
-<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula1.png">
-<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula2.png">
-<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula3.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_1.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_2.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_3.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE.png">
 <meta property="article:published_time" content="2022-11-11T09:28:18.453Z">
-<meta property="article:modified_time" content="2022-11-13T15:17:38.498Z">
+<meta property="article:modified_time" content="2022-11-13T15:27:42.783Z">
 <meta property="article:author" content="Yiran Wang">
 <meta property="article:tag" content="Machine learning">
 <meta name="twitter:card" content="summary">
@@ -111,11 +111,20 @@
 <h3 id="1-Bayesian-Optimization"><a href="#1-Bayesian-Optimization" class="headerlink" title="1. Bayesian Optimization"></a>1. Bayesian Optimization</h3><p>Bayesian optimization is a global optimization with a sequential strategy. Sequential means to running evaluations one after another. It is usually used for models where the objective function is too computational complex or with an unknown form of structure. </p>
 <p>The main idea of Bayesian Optimization is to not deal with the detail of the objective function, but to treat it as a random function with a prior. The <strong>prior</strong> p(y) reflects the assumption of the objective function <em>f</em> and it will be updated by evaluating on <strong>data</strong> p(x|y) to form the <strong>posterior</strong> p(y|x). Based on the posterior distribution, an gain criteria (i.e., Expected Improvement, <strong>EI</strong> or Expected Losses) will be constructed to select the next query point (combination of hyperparameters). The next query point should be selected by following the <strong>exploration and exploitation</strong> tradeoff where the model can achieve a relatively high performance or low loss with relatively few queries.</p>
 <h3 id="2-SMBO"><a href="#2-SMBO" class="headerlink" title="2. SMBO"></a>2. SMBO</h3><p>Sequential model based optimization (SMBO) is a clear formalization of Bayesian Optimization. It takes the previous evaluations into account to select the next combination of hyperparameters. When selecting future set of hyperparameter, it tries to search on ranges that may potentially give a better outcome based on Bayesian reasoning without calculating gradient. It can handle real-valued, discrete as well as conditional types of hyperparameters. Additionally, it is also capable of dealing with large number of hyperparameters. The following shows the outline of SMBO:</p>
-<p align="center"> <img width="40%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/SMBO.png"> </p>
+<p align="center"> <img width="100%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/SMBO.png"> </p>
 
-<!-- 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SMBO(f,M_0,n,S)</span><br><span class="line">  H &lt;- &#123;&#125;   # evaluation history</span><br><span class="line">  for i &lt;- 1 to n:  # number of evaluation trials</span><br><span class="line">    x* &lt;- argmin_x S(x,M_i-1)  # get the next combination of hyperparameters to evaluate</span><br><span class="line">    calculate f(x*)  # evaluate the model with the new x*</span><br><span class="line">    H &lt;- &#123;H, (x*,f(x*))&#125;  # save the history</span><br><span class="line">    M_t updated with H  # M is updated to be a better approximation of f</span><br></pre></td></tr></table></figure>
-<p>–&gt;</p>
+<!-- regular html comment
+# ```
+# SMBO(f,M_0,n,S)
+#   H <- {}   # evaluation history
+#   for i <- 1 to n:  # number of evaluation trials
+#     x* <- argmin_x S(x,M_i-1)  # get the next combination of hyperparameters to evaluate
+#     calculate f(x*)  # evaluate the model with the new x*
+#     H <- {H, (x*,f(x*))}  # save the history
+#     M_t updated with H  # M is updated to be a better approximation of f
+# ```
+-->
+
 <p>where:</p>
 <ul>
 <li>X: a domain of hyperparameters, search space</li>
@@ -127,41 +136,62 @@
 <p>The <strong>surrogate function</strong> or <strong>acquisition function</strong> does the tradeoff between exploring new areas in the search space and exploiting the areas that are evaluated and potentially have optimal candidates. There are different algorithms to optimize the Expected Improvement (<strong>EI</strong>), among which, <strong>Tree-based Paren Estimater (TPE)</strong> is well-known by its efficiency and promising outcome.</p>
 <h3 id="2-TPE"><a href="#2-TPE" class="headerlink" title="2. TPE"></a>2. TPE</h3><p>As a kernel estimator, TPE is designed to construct in tree structures. It models the <strong>posterior</strong> distribution p(y|x) (build a surrogate function <em>M</em> to approximate objective function <em>f</em>) by modeling the <strong>likelihood</strong> p(x|y) and <strong>prior</strong> p(y). </p>
 <p>To model p(x|y), the TPE transforms the configuration space <em>X</em> based on types: uniform to truncated Gaussian mixture, log-uniform to exponential truncated Gaussian mixture, categorical to re-weighted categorical. The distributions of the configuration prior is replaced by non-parametric densities. These transformations, along with different hyperparameter candidates <em>x</em> in the non-parametric densities, represent a learning algorithm to produce many densities over <em>X</em>. Here are the two densities used in TPE:</p>
-<p align="center"> <img width=40% src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_pxy.png"> </p>
+<p align="center"> <img width="100%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_pxy.png"> </p>
 
-<!-- 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p(x|y) = l(x) if y &lt; y*  #l(x) is density formed using hyperparameter candidates that make loss of f less than y*</span><br><span class="line">p(x|y) = g(x) if y &gt;= y*  #g(x) is density formed using the rest hyperparameter candidates</span><br></pre></td></tr></table></figure>
-<p>–&gt;</p>
+<!-- regular html comment
+# ```
+# p(x|y) = l(x) if y < y*  #l(x) is density formed using hyperparameter candidates that make loss of f less than y*
+# p(x|y) = g(x) if y >= y*  #g(x) is density formed using the rest hyperparameter candidates
+# ```
+-->
+
 <p>The TPE chooses y* to be some quantile r of the observed y values so that </p>
-<p align="center"> <img width=40% src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula1.png"> </p>
+<p align="center"> <img width="15%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_1.png"> </p>
 
-<!-- 
+<!-- regular html comment
 $$p(y < y^*) = \gamma$$
 -->
 
 <p>The Expected Improvement is:</p>
-<p align="center"> <img width="40%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula2.png"> </p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_2.png"> </p>
 
-<!-- 
+<!-- regular html comment
 $$EI_{y^*}(x)=\int_{-\infty}^{y^*}(y^*-y)p(y|x)dy = \int_{-\infty}^{y^*}(y^*-y) \frac{p(x|y)p(y)}{p(x)} dy$$ 
 $$\int_{-\infty}^{y^*}(y^*-y) p(x|y)p(y) dy = l(x)\int_{-\infty}^{y^*} (y^*-y) p(y)dy = \gamma {y^*} l(x) - l(x) \int_{-\infty}^{y^*}p(y)dy$$
 $$p(x) = \int p(x|y)p(y)dy = \gamma l(x) + (1-\gamma) g(x)$$
 -->
 
 <p>So,</p>
-<p align="center"> <img width="40%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula3.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE_formula_3.png"> </p>
 
-<!-- 
+<!-- regular html comment
 $$EI_{y^*}(x)=\frac{\gamma {y^*} l(x) - l(x) \int_{-\infty}^{y^*}p(y)dy}{\gamma l(x) + (1-\gamma) g(x)} \propto (\gamma + \frac{g(x)}{l(x)}(1-\gamma))^{-1}$$
 -->
 
 <p>The continuous types of hyperparameter configurations <em>X &#x3D; {x1, x2, …, xk}</em> are specified by a prior (uniform or Gaussian or log-uniform distribution) over some interval. The TPE then transform the prior to an equally weighted Gaussian mixtures (for uniform prior) centered at each <em>xi</em>. The standard deviation of each Gaussian is set to the greater of the distances to the left and right neighbor (including the upper and lower limit of the uniform range) with clipping to limit within a reasonable range. For discrete hyperparameters, the prior would be a vector where each element is assigned to a probability pi, and in the posterior vector, the elements are proportional to <em>N*pi+Ci</em>  where <em>N</em> is the total number of elements and <em>C</em> is the count of the occurrences of the <em>i</em>th choice. To maximize <strong>EI</strong>, the hyperparameter candidates with the high probability under <em>l(x)</em> and low probability under <em>g(x)</em> are preferred. The tree structured form of <em>l</em> and <em>g</em> makes it easy for evaluation and selection of the optimal x* with the highest <em>EI</em>.</p>
 <p>Overall, the algorithm of TPE can be summarized as below:</p>
-<p align="center"> <img width="40%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE.png"> </p>
+<p align="center"> <img width="100%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/TPE/TPE.png"> </p>
 
-<!-- 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">X # define the hyperparameter configuration, search space</span><br><span class="line">f # define the objective function which takes in a set of hyperparameters and output a score to minimize/maximize</span><br><span class="line">TPE(f,X,n)</span><br><span class="line">  H &lt;- &#123;&#125;   # evaluation history</span><br><span class="line">  for i &lt;- 1 to j: # for j random selected sets of hyperparameters</span><br><span class="line">    x&#x27; &lt;- random_sample(X) # random select a set of hyperparameters</span><br><span class="line">    f(x&#x27;) # calculate objective score</span><br><span class="line">    H &lt;- &#123;H, (x&#x27;,f(x&#x27;))&#125;  # save the history</span><br><span class="line">  for i &lt;- 1 to n:  # number of evaluation trials</span><br><span class="line">    sort the selected x based on their scores</span><br><span class="line">    divide into two groups x1 (best score) and x2 (rest) based on some quatile r</span><br><span class="line">    model l(x1) and g(x2) by Parzen Estimators (density mixtures)</span><br><span class="line">    x* &lt;- argmin_&#123;sample(l(x1))&#125; l(x1)/g(x2)  # draw samples x* from l(x1) and get sets of x that yield the minimum/maxmum of l(x1)/g(x2)</span><br><span class="line">    calculate f(x*)  # evaluate the model with the new x*</span><br><span class="line">    H &lt;- &#123;(x*,f(x*))&#125;  # update the selected x and their scores</span><br></pre></td></tr></table></figure>
-<p>–&gt;</p>
+<!-- regular html comment
+# ```
+# X # define the hyperparameter configuration, search space
+# f # define the objective function which takes in a set of hyperparameters and output a score to minimize/maximize
+# TPE(f,X,n)
+#   H <- {}   # evaluation history
+#   for i <- 1 to j: # for j random selected sets of hyperparameters
+#     x' <- random_sample(X) # random select a set of hyperparameters
+#     f(x') # calculate objective score
+#     H <- {H, (x',f(x'))}  # save the history
+#   for i <- 1 to n:  # number of evaluation trials
+#     sort the selected x based on their scores
+#     divide into two groups x1 (best score) and x2 (rest) based on some quatile r
+#     model l(x1) and g(x2) by Parzen Estimators (density mixtures)
+#     x* <- argmin_{sample(l(x1))} l(x1)/g(x2)  # draw samples x* from l(x1) and get sets of x that yield the minimum/maxmum of l(x1)/g(x2)
+#     calculate f(x*)  # evaluate the model with the new x*
+#     H <- {(x*,f(x*))}  # update the selected x and their scores
+# ```
+-->
+
 <h3 id="3-TPE-Hyperopt"><a href="#3-TPE-Hyperopt" class="headerlink" title="3. TPE - Hyperopt"></a>3. TPE - Hyperopt</h3><p>Hyperopt is a Python library to select hyperparameters automatically based on SMBO. It starts with defining two essential parts of the process:</p>
 <ul>
 <li>Hyperparameter configuration, search space</li>
@@ -169,10 +199,11 @@ $$EI_{y^*}(x)=\frac{\gamma {y^*} l(x) - l(x) \int_{-\infty}^{y^*}p(y)dy}{\gamma 
 </ul>
 <p>The following is a simple example about how to use the package, more detailed information can be found <a target="_blank" rel="noopener" href="https://github.com/hyperopt/hyperopt/wiki/FMin">here</a>.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 3.1 import library</span><br><span class="line">from hyperopt import hp, fmin, tpe, STATUS_OK, Trials</span><br><span class="line"></span><br><span class="line"># 3.2 define search space for hyperparameters</span><br><span class="line">space =&#123;&quot;lr&quot;: hp.loguniform(&quot;m_lr&quot;, np.log(1e-4), np.log(1e-2)),</span><br><span class="line">        &quot;activation&quot;: hp.choice(&quot;m_activation&quot;, (&#x27;relu&#x27;, &#x27;tanh&#x27;, &#x27;linear&#x27;, &#x27;sigmoid&#x27;)),</span><br><span class="line">        &quot;dropout&quot;: hp.uniform(&quot;m_do&quot;, 0, 0.7),</span><br><span class="line">        &quot;hidden_size&quot;: hp.choice(&quot;m_hiddensize&quot;, ((64,32,16), (32,16,8), (64,64)))&#125;</span><br><span class="line">        </span><br><span class="line"># 3.3 define objective function</span><br><span class="line">def objective():</span><br><span class="line">  model_mlp.initialize(space) # self-defined configurable model</span><br><span class="line">  history = model_mlp.fit(x_train, y_train, epochs=100, validation_data=(x_val, y_val))</span><br><span class="line">  min_loss = min(history.history[&#x27;val_loss&#x27;]) # if want to minimize the validation loss</span><br><span class="line">  return &#123;&#x27;loss&#x27;: min_loss, &#x27;status&#x27;: STATUS_OK&#125;</span><br><span class="line">  </span><br><span class="line"># 3.4 save the results</span><br><span class="line">trials = Trials() # stores the return values during the evaluation procedure, for plotting and analyzing</span><br><span class="line"></span><br><span class="line"># 3.5 evaluation</span><br><span class="line">best = fmin(fn=objective,</span><br><span class="line">            space=space,</span><br><span class="line">            algo=tpe.suggest,</span><br><span class="line">            max_evals=200,</span><br><span class="line">            trials=trials)</span><br><span class="line">best # the selected set of hyperparameters which gives the best result of objective function</span><br></pre></td></tr></table></figure>
+
 <p>Note that TPE requires many iterations to converge to an optimal solution, and it is recommended to run it for at least 200 iterations. Every iteration needs to evaluate a full generated model (with a predefined epoch times on the full training&#x2F;validation datasets). Thus it is likely that this process may take from a few hours up to a few days to complete, especially for deep neural networks or models with a large dataset.</p>
 <h4 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h4><p><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://papers.nips.cc/paper/2011/file/86e8f7ab32cfd12577bc2619bc635690-Paper.pdf">Algorithms for Hyper-Parameter Optimization</a></p>
 <p><a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://conference.scipy.org/proceedings/scipy2013/pdfs/bergstra_hyperopt.pdf">Hyperopt: A Python Library for Optimizing the Hyperparameters of Machine Learning Algorithms</a></p>
--->
+
       
     </div>
     <footer class="article-footer">
