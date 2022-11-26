@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Interesting things in C# | Something about Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="C# is a high level, object-oriented, type-safe programming language, designed by Microsoft. C# programs mostly run on .NET which is a platform and programming framework for cross-platform development.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Interesting things in C#">
+<meta property="og:url" content="https://yarinamomo.github.io/2022/11/22/CSharp/index.html">
+<meta property="og:site_name" content="Something about Learning">
+<meta property="og:description" content="C# is a high level, object-oriented, type-safe programming language, designed by Microsoft. C# programs mostly run on .NET which is a platform and programming framework for cross-platform development.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-11-21T23:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-26T16:13:51.997Z">
+<meta property="article:author" content="Yiran Wang">
+<meta property="article:tag" content="Programming">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Something about Learning" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Something about Learning</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yarinamomo.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSharp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/11/22/CSharp/" class="article-date">
+  <time class="dt-published" datetime="2022-11-21T23:00:00.000Z" itemprop="datePublished">2022-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Interesting things in C#
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>C# is a high level, object-oriented, type-safe programming language, designed by Microsoft. C# programs mostly run on .NET which is a platform and programming framework for cross-platform development. .NET compiles and runs C# programs through a virtual execution system (the common language runtime - CLR) and a set of class libraries. C# is also very popular among game developers because it is the main developing language in Unity3D engine. </p>
+<p>I have been working with C# for a few years as game developer and I have enjoyed the time I have spent with it. In this post, I will talk about a few things that I found valuable and interesting to know about C#. It is also a good way for me to refresh my memory since I now mainly work with ML in python and R. The topic will cover Value type and Reference type, Boxing and Unboxing, Virtual Methods, Struct and Class, Interface and Abstract class, Reflection, Delegate, Action and Function, Closure, and GC (Garbage Collector).</p>
+<span id="more"></span>
+
+
+<h3 id="1-Value-type-and-Reference-type"><a href="#1-Value-type-and-Reference-type" class="headerlink" title="1. Value type and Reference type"></a>1. Value type and Reference type</h3><p>Value type and Reference type are the two main types in C#. The main difference between them is that value types are usually stored in the stack while reference types are stored in the heap. </p>
+<p>To be more specific, a value type derives from System.ValueType. It usually stores data within its own memory space, which means variables of value type have their own copy of data. When a variable is copied to another, the value is also copied, so changes to one variable do not affect the other (except using keyword <em>ref</em> and <em>out</em> for specific reference copying). The typical data types of value type are:</p>
+<ul>
+<li>All fundamental data types such as int, float, double, long, byte, char, etc.</li>
+<li>Boolean, Date, struct, enum and so on.</li>
+</ul>
+<p>On the other hand, a reference type inherits from System.Object. It usually stores an address which points to a memory location in the heap where the actual data is saved. When copying, usually the reference is copied (the address), so changing one of the variables would change the actual value on the heap so that affecting all variables that hold the reference (address) to the value. The main data types of reference type are:</p>
+<ul>
+<li>String and array</li>
+<li>Class, interface, delegate, etc.</li>
+</ul>
+<p>Another difference between reference type and value type is that one cannot derive from a value type nor can one assign a null value directly to a value type (unless using <em>nullable</em> types introduced in C# 2.0).</p>
+<h3 id="2-Boxing-and-Unboxing"><a href="#2-Boxing-and-Unboxing" class="headerlink" title="2. Boxing and Unboxing"></a>2. Boxing and Unboxing</h3><p>Following the value type and reference type, if one wants to convert value types to objects (reference type without specify which type, as we know reference type derived from System.Object) or the other way around, boxing and unboxing would be the way. Boxing means to convert a <strong>value type</strong> to <strong>object</strong> type . Then the object which wraps the value will be stored in the heap. Here is an example of boxing:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int a = 1;</span><br><span class="line">object o = a; // boxing</span><br></pre></td></tr></table></figure>
+
+<p>Unboxing does the opposite. It extracts the value type from the object. Unlike boxing, unboxing has to be explicit (specify the value type it converts to). For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">object o = 1;</span><br><span class="line">int a = (int)o; // unboxing</span><br></pre></td></tr></table></figure>
+
+<p>There is a performance issue regarding boxing and unboxing as the processes are computationally expensive. When boxing, a new object needs to be allocated and constructed, which may take up to 20 times longer than a simple reference assignment. When unboxing, it first checks if the given value type is correct, then copies the value from the object instance to the assigned variable. This process can take about four times as long as an usual assignment. (<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/framework/performance/performance-tips">Source</a>) Thus frequent boxing and unboxing processes are better to avoid by using generic collections (System.Collections.Generic.List<T>).</T></p>
+<h3 id="3-Virtual-Methods"><a href="#3-Virtual-Methods" class="headerlink" title="3. Virtual Methods"></a>3. Virtual Methods</h3><p>Virtual methods refer to methods with keyword <strong>virtual</strong> when declaring. The main difference between virtual methods and non-virtual methods is that virtual methods can be override in the derived classes (with keyword <strong>override</strong>). It is also an example of polymorphism.</p>
+<p>Virtual methods cannot have <em>static</em>, <em>abstract</em>, or <em>override</em> keywords. It cannot be <em>private</em> either. But one can override virtual methods using <em>abstract</em> in derived classes.</p>
+<p>Normally, methods are statically complied into executable files at compile time and their addresses do not change during run-time. While for virtual methods, when it is invoked, the method which will be executed is decided by checking the derived classes for corresponding overriding method at run-time dynamically:</p>
+<ul>
+<li>When invoking a method from a class, the system will check the declaration class of this method first. If the method is not virtual method, then it will be executed straight away.</li>
+<li>If it is a virtual method, the system will continue to check the instance class to see if the method is being overriden. If so, the overrided method will be executed. </li>
+<li>Otherwise it will keep looking through the derived classes until finding the first derrived class which overrides the virtual method and execute it.</li>
+</ul>
+<p>For example</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">using System;  </span><br><span class="line">  </span><br><span class="line">namespace VirtualIE</span><br><span class="line">&#123;     </span><br><span class="line">    class A  </span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">       public void Fun1()  </span><br><span class="line">       &#123;  </span><br><span class="line">           Console.WriteLine(&quot;Class A Function 1 is called&quot;);  </span><br><span class="line">       &#125;  </span><br><span class="line">  </span><br><span class="line">       public virtual void Fun2()  </span><br><span class="line">       &#123;  </span><br><span class="line">           Console.WriteLine(&quot;Class A Function 2 is called&quot;);  </span><br><span class="line">       &#125;  </span><br><span class="line">    &#125;   </span><br><span class="line">  </span><br><span class="line">    class B : A  </span><br><span class="line">    &#123;  </span><br><span class="line">    </span><br><span class="line">      public void Fun1()  </span><br><span class="line">        &#123;  </span><br><span class="line">            Console.WriteLine(&quot;Class B Function 1 is called&quot;);  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        public override void Fun2()  </span><br><span class="line">        &#123;  </span><br><span class="line">            Console.WriteLine(&quot;Class B Function 2 is called&quot;);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;   </span><br><span class="line">  </span><br><span class="line">    class Program  </span><br><span class="line">    &#123;  </span><br><span class="line">        static void Main()  </span><br><span class="line">        &#123;  </span><br><span class="line">             B b = new B(); // declarition class B, instance class B</span><br><span class="line">             A a = b;       // declarition class A, instance class B</span><br><span class="line">             b.Fun1();      // &quot;Class B Function 1 is called&quot;</span><br><span class="line">             a.Fun1();      // &quot;Class A Function 1 is called&quot;</span><br><span class="line">             b.Fun2();      // &quot;Class B Function 2 is called&quot;</span><br><span class="line">             a.Fun2();      // &quot;Class B Function 2 is called&quot;</span><br><span class="line">        &#125;         </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-Struct-and-Class"><a href="#4-Struct-and-Class" class="headerlink" title="4. Struct and Class"></a>4. Struct and Class</h3><p>Struct can be used to store data like a class and it is also referred as a light version of a class. However, there are many differences between them.</p>
+<ul>
+<li><p>First of all, a struct is value type whereas a class is reference type. This means that struct objects usually allocated on the stack, so they have their own copy of the data and operations on one struct object doesn’t affect another (expect for specified references, i.e. with ref and out keywords). On the other hand, class objects usually allocated on the heap, so two class objects can have the same reference and operations on one of them would affect another.</p>
+</li>
+<li><p>Struct can be seen as a data structure. It cannot derive from another class or struct, and it cannot be inherited either. Rather, all structs inherit from System.ValueType which inherits from System.Object.</p>
+</li>
+<li><p>By default, structs are public while classes are private. Members in structs cannot be abstract, virtual, sealed or protected.</p>
+</li>
+<li><p>Unlike classes, structs cannot have a default non-parameterized constructor or a destructor. It can only contain a parameterized constructor or a static constructor.</p>
+</li>
+</ul>
+<p>The following shows an example of a struct with parameterized constructor:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">struct Student</span><br><span class="line">&#123;</span><br><span class="line">    public string name;</span><br><span class="line">    public int id;</span><br><span class="line"></span><br><span class="line">    public Student(string name, int id)</span><br><span class="line">    &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Student A = new Student(&quot;Otto&quot;, 2);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(A.name); // output: Otto  </span><br><span class="line">Console.WriteLine(A.id); // output: 2</span><br></pre></td></tr></table></figure>
+
+<p>Structs usually are used for light weighted objects that mostly contain data and not likely to be frequently modified or short lived, such as Color, Rectangle, etc.</p>
+<h3 id="5-Interface-and-Abstract-class"><a href="#5-Interface-and-Abstract-class" class="headerlink" title="5. Interface and Abstract class"></a>5. Interface and Abstract class</h3><p>Interface and abstract class are both examples of polymorphism. They can be inherited, but cannot be instantiated directly. The main idea of interface and abstract class is to perform the abstraction, which means that the detailed implementation of methods is done by the derived&#x2F;implementation classes.</p>
+<p>However, there are obvious differences between them. </p>
+<ul>
+<li><strong>Declaration</strong>: Abstract classes can contain both declaration only and implemented methods or properties, while interface can only have the declarations of the members.</li>
+<li><strong>Access</strong>: Members in abstract classes can be public, protected, or private, but can only be public in interfaces.</li>
+<li><strong>Static members</strong> :Abstract classes can have static members while interface cannot.</li>
+<li><strong>Inheritance</strong>: A class can only derive from one base class which can be either standard class or abstract class. However, it can derive from multiple interfaces. When deriving from abstract, all members that are marked as abstract have to be implemented. For interface, it is required to be fully implemented.</li>
+<li><strong>Constructor</strong>: An abstract class has constructors while the interface doesn’t.</li>
+</ul>
+<p>Overall, abstract class is mainly used for extracting common features from multiple derived classes. It can be seen as the result of code refactoring. While interface is usually designed to abstract functions.</p>
+<p>Comparing abstract methods to virtual methods, now it is clear that abstract methods <strong>MUST</strong> be implemented in the derived classes, but virtual methods provide an option of being overrided since they have their own “default” implementation.</p>
+<h3 id="6-Reflection"><a href="#6-Reflection" class="headerlink" title="6. Reflection"></a>6. Reflection</h3><p>Reflection is mainly used for obtaining type information at runtime. It can let code to inspect other code within the same system. For example, it can get the metadata information via the <strong>Type</strong> abstract class.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// Online C# Editor for free</span><br><span class="line">// Write, Edit and Run your C# code using C# Online Compiler</span><br><span class="line"></span><br><span class="line">using System;</span><br><span class="line">using System.Reflection;</span><br><span class="line"></span><br><span class="line">public class ReflectionTest</span><br><span class="line">&#123;</span><br><span class="line">    public static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        Type type = typeof(DateTime);</span><br><span class="line">        Console.WriteLine(&quot;Name : &#123;0&#125;&quot;, type.Name);</span><br><span class="line">        Console.WriteLine(&quot;Full Name : &#123;0&#125;&quot;, type.FullName);</span><br><span class="line">        Console.WriteLine(&quot;Namespace : &#123;0&#125;&quot;, type.Namespace);</span><br><span class="line">        Console.WriteLine(&quot;Base Type : &#123;0&#125;&quot;, type.BaseType);</span><br><span class="line"></span><br><span class="line">        Console.WriteLine(&quot;Properties :&quot;);</span><br><span class="line">        PropertyInfo[] propertiesInfo = type.GetProperties();</span><br><span class="line">        for (int i = 0; i &lt; 10; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(&quot; &quot; + propertiesInfo[i].Name);</span><br><span class="line">        &#125;</span><br><span class="line">        Console.WriteLine();</span><br><span class="line">        </span><br><span class="line">        Console.WriteLine(&quot;Methods :&quot;);</span><br><span class="line">        MethodInfo[] methodInfos = type.GetMethods();</span><br><span class="line">        for (int i = 0; i &lt; 10; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(&quot; &quot; + methodInfos[i].Name);</span><br><span class="line">        &#125;</span><br><span class="line">        Console.WriteLine();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The output will be:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Name : DateTime</span><br><span class="line">Full Name : System.DateTime</span><br><span class="line">Namespace : System</span><br><span class="line">Base Type : System.ValueType</span><br><span class="line">Properties :</span><br><span class="line"> Date Day DayOfWeek DayOfYear Hour Kind Millisecond Minute Month Now</span><br><span class="line">Methods :</span><br><span class="line"> Add AddDays AddHours AddMilliseconds AddMinutes AddMonths AddSeconds AddTicks AddYears Compare</span><br></pre></td></tr></table></figure>
+
+<p>Reflection can be used to create an instance dynamically and bind it to an object  by using <strong>Activator.CreateInstance</strong>. The following is an example of dynamically create an instance of an assembly .dll file. Assemblies usually contain modules which contain types which contain members.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Assembly testAssembly = Assembly.LoadFile(@&quot;c:\Test.dll&quot;); // dynamically load assembly from file Test.dll</span><br><span class="line">Type emType = testAssembly.GetType(&quot;Test.Employee&quot;); // get type of class Employee from the loaded assembly</span><br><span class="line">object emInstance = Activator.CreateInstance(emType); // create instance of class Employee</span><br><span class="line"></span><br><span class="line">PropertyInfo namePropertyInfo = emType.GetProperty(&quot;Name&quot;); // get info about property Name (public string Name)</span><br><span class="line">string value = (string)namePropertyInfo.GetValue(emInstance, null);/ / get value of property</span><br><span class="line">namePropertyInfo.SetValue(emInstance, &quot;Otto&quot;, null);// set value to the property</span><br></pre></td></tr></table></figure>
+
+<p>It can also be used to get the type from an existing instance and get access to its attributes by using <strong>GetType</strong>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int i = 42;</span><br><span class="line">System.Type type = i.GetType();</span><br><span class="line">System.Console.WriteLine(type); // System.Int32</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="7-Delegate"><a href="#7-Delegate" class="headerlink" title="7. Delegate"></a>7. Delegate</h3><p>A delegate is a reference type which refers to methods with certain parameter list and return type. From the perspective of data structure, delegates are also user-define type like classes. </p>
+<p>It is a mechanic to make callback methods work in C#. It can be seen as abstract of methods, which stores a type of addresses of methods that have the same signature (name, type and kind(value, ref, out) of the parameters) and return type. When a delegate is called, all methods linked to the delegate will be executed.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[modifier] delegate [return_type] [delegate_name] ([parameter_list]);</span><br></pre></td></tr></table></figure>
+
+<p>The following shows how to define a delegate and its callback methods. The methods can also be implemented with lambda expressions.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">class DelegateTest &#123;</span><br><span class="line"></span><br><span class="line">  public delegate void CalAdd(int a, int b);</span><br><span class="line"></span><br><span class="line">  public static void Sum(int a, int b)</span><br><span class="line">  &#123;</span><br><span class="line">  	Console.WriteLine(&quot;&#123;0&#125; + &#123;1&#125; = &#123;2&#125;&quot;, a, b, a + b);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void Main(String []args)</span><br><span class="line">  &#123;</span><br><span class="line">    CalAdd cal_add = new CalAdd(Sum);</span><br><span class="line"></span><br><span class="line">    cal_add(2, 3); // output: 2 + 3 = 5</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If one wants to add multiple methods to a delegate, <strong>+&#x3D;</strong> can be used:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">class DelegateTest &#123;</span><br><span class="line"></span><br><span class="line">  public delegate void Rectangle(double height, double width);</span><br><span class="line"></span><br><span class="line">  public static void Area(double height, double width)</span><br><span class="line">  &#123;</span><br><span class="line">  	Console.WriteLine(&quot;Area of rectangle with H &#123;0&#125; and W &#123;1&#125; is: &#123;2&#125;&quot;, width, height, width * height);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  public static void Perimeter(double height, double width)</span><br><span class="line">  &#123;</span><br><span class="line">  	Console.WriteLine(&quot;Perimeter of rectangle with H &#123;0&#125; and W &#123;1&#125; is: &#123;2&#125;&quot;, width, height, 2 * (width + height));</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  public static void Main(String []args)</span><br><span class="line">  &#123;</span><br><span class="line">    Rectangle rect = new Rectangle(Area);</span><br><span class="line">    rect += Perimeter;</span><br><span class="line"></span><br><span class="line">    rect(2.2, 3.3);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Delegate can also be generic, which means it is not necessary to specify the type of parameters or the return type. One can simply use generic type when declaring a delegate. But the types have to be specified when assigning methods to the delegate.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">class DelegateTest &#123;</span><br><span class="line"></span><br><span class="line">  public delegate T Add&lt;T&gt;(T param1, T param2); // generic delegate</span><br><span class="line"></span><br><span class="line">  public static string Concat(string a, string b)</span><br><span class="line">  &#123;</span><br><span class="line">  	return a + b;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void Main(String []args)</span><br><span class="line">  &#123;</span><br><span class="line">  	Add&lt;int&gt; sum = new Add&lt;int&gt;((a, b) =&gt; a + b);  // lambda expression</span><br><span class="line">	  Console.WriteLine(sum(2, 3)); // output: 5</span><br><span class="line">    </span><br><span class="line">    Add&lt;string&gt; concat = Concat;</span><br><span class="line">  	Console.WriteLine(concat(&quot;hello&quot;, &quot;world&quot;)); // output: helloworld</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-Action-and-Function"><a href="#8-Action-and-Function" class="headerlink" title="8. Action and Function"></a>8. Action and Function</h3><p>Action and Func are pre-defined delegates. The difference between them is that actions do not have return type.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">class DelegateTest &#123;</span><br><span class="line"></span><br><span class="line">	public static int Sum(int a,int b) // callback method with return type</span><br><span class="line">    &#123;</span><br><span class="line">        return a + b;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static void SumPrint(int a,int b) // callback method without return type</span><br><span class="line">    &#123;</span><br><span class="line">    	Console.WriteLine(a + b);</span><br><span class="line">    &#125;</span><br><span class="line">    public delegate int Cal(int a,int b);</span><br><span class="line"></span><br><span class="line">    public static void Main(String []args)</span><br><span class="line">    &#123;</span><br><span class="line">        Cal cal = new Cal(Sum); // standard delegate</span><br><span class="line">        Console.WriteLine(cal(2, 3));</span><br><span class="line"></span><br><span class="line">        Func&lt;int,int,int&gt; cal_func = Sum; // Func, with return type</span><br><span class="line">        Console.WriteLine(cal_func(2, 3));</span><br><span class="line">        </span><br><span class="line">        Action&lt;int,int&gt; cal_act = SumPrint; // Action, without return type</span><br><span class="line">        cal_act(2, 3);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="9-Closure"><a href="#9-Closure" class="headerlink" title="9. Closure"></a>9. Closure</h3><p>A closure is a type of method that has access to members (i.e. non-local) in the environment which another method (its parent method which defined the closure inside) is in. </p>
+<p>The following is an example of closure using an anonymous method. An anonymous method is inline unnamed method in the code. It is created using the <strong>delegate</strong> keyword and doesn’t require a name and return type.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class ClosureTest</span><br><span class="line">&#123;</span><br><span class="line">    public static Func&lt;int,int&gt; A()</span><br><span class="line">    &#123;</span><br><span class="line">        var outside_var = 1;</span><br><span class="line">        Func&lt;int, int&gt; InsideFunc = delegate(int local_var)</span><br><span class="line">        &#123;</span><br><span class="line">            outside_var = outside_var + 1;</span><br><span class="line">            return local_var + outside_var;</span><br><span class="line">        &#125;;</span><br><span class="line">        return InsideFunc;</span><br><span class="line">    &#125;</span><br><span class="line">    static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        var inside_func = A();</span><br><span class="line">        Console.WriteLine(inside_func(1)); // 3</span><br><span class="line">        Console.WriteLine(inside_func(2)); // 5</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now you may have noticed that the anonymous method is bound to the variables (i.e. outside_var) in its parent method (i.e. A), not just the values (i.e. 1). For example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class ClosureTest</span><br><span class="line">&#123;</span><br><span class="line">    static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">    	  Action[] actions = new Action[5];</span><br><span class="line">        for (var i=0; i &lt; actions.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            actions[i] = () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">            	Console.WriteLine(i);</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        foreach (var item in actions)</span><br><span class="line">        &#123;</span><br><span class="line">        	item();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The output would be <em>5 5 5 5 5</em>. Because in the for loop, there is only one variable i, which means the address of i is decided when first entering the for loop. The later executions can only change the value of i. Thus, the anonymous method can only link to the variable (or the address of the variable) instead of the value. Only when executing the method, the actual value of the variable can be decided. This is why the output of the above example is all <em>5</em>. However, if one expect the output to be <em>0 1 2 3 4</em>, one can do the following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">public class ClosureTest</span><br><span class="line">&#123;</span><br><span class="line">    static void Main(string[] args)</span><br><span class="line">    &#123;</span><br><span class="line">    	  Action[] actions = new Action[5];</span><br><span class="line">        for (var i=0; i &lt; actions.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">        	  int tmpNum = i;</span><br><span class="line">            actions[i] = () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">            	Console.WriteLine(tmpNum);</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        foreach (var item in actions)</span><br><span class="line">        &#123;</span><br><span class="line">        	item();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The output will be <em>0 1 2 3 4</em> this time. Because a new temporary variable is now declared inside the for loop and stores the value of i. For every loop, the compiler will allocate new address for this temporary variable which the anonymous method is bound to.</p>
+<h3 id="10-GC-Garbage-Collector"><a href="#10-GC-Garbage-Collector" class="headerlink" title="10. GC (Garbage Collector)"></a>10. GC (Garbage Collector)</h3><p>Garbage Collector is like a memory manager, it manages the allocation and release of memory for the application. It goes through all the objects that take up space in the heap and figures out which objects are no longer being used (garbage) and reclaim their memory. In CLR, GC rather runs automatically, so that developers don’t have to write code about managing memory. The collection process is <strong>triggered</strong> if one of the followings is true:</p>
+<ul>
+<li>The system has low physical memory when it is notified by the operating system or the host.</li>
+<li>The used memory on the managed heap exceeds a threshold which is continuously adjusted while the process runs.</li>
+<li>The <strong>GC.Collect</strong> method is called. This method is not necessary to be called manually as the GC runs automatically, except for special situations or testing mode.</li>
+</ul>
+<p>The garbage objects need to be identified and cleared. The most common algorithms to do this include <em>reference counting</em>, <em>mark and sweep</em>, <em>escape analysis</em> and so on. Among those, mark and sweep is widely used in many popular virtual systems such as <em>.net CLR</em> and <em>Java VM</em>.</p>
+<p>The <strong>Mark and sweep algorithm</strong> first finds all reachable objects from roots and mark them, then recycle the non-reachable objects. Finally it will compact the free memory fregments. The detailed steps are as following:</p>
+<ul>
+<li>Suspend the threads</li>
+<li>Identify roots by finding all objects that are directly accessible by a local variable. Roots mainly are mainly static initialized variables and variables that are currently in use.</li>
+<li>Create graph between roots and all other existing objects through their reference relationship. By default every object is marked as 0 when it is created. The graph will help to find to mark all reachable objects and they will be marked as 1. So all remaining objects that are still 0 are unreachable objects.</li>
+<li>The unreachable objects (marked as 0) are swept from the heap memory.</li>
+<li>Since the cleared spaces are usually not connected on the memory but of fragments, it is unable to use for a larger memory allocation. The free memory blocks are then shuffled and placed together to form one large block, which is called compaction.</li>
+<li>Now the free memory can be allocated again by using a pointer which points to the first address on the heap.</li>
+</ul>
+<p>As it mentioned, the process is done while the the normal application is suspended. Thus it is crucial to have the process more efficient. To optimize the process, in C# GC, the marking and sweeping is done by using generations algorithm. It is based on the idea that GC primarily occurs with the reclamation of short-lived objects (new objects). </p>
+<p>The <strong>generations algorithm</strong> first divides the managed heap into three generations 0, 1, and 2 for objects with different life expectancy. This is also to avoid the resulting fregments of free memory in the above algorithm and faster the process, because it is faster to compact a portion of the managed heap than the entire heap. The GC (the above <strong>mark and sweep algorithm</strong>) occurs on each generation separately based on the <strong>triggering</strong> conditions mentioned above.</p>
+<ul>
+<li>Generation 0 is for the youngest or new objects (usually small too) and short-lived objects such as temporary objects. Objects that survive a generation 0 GC are promoted to generation 1. In this part, the GC occurs the most frequently. </li>
+<li>Generation 1 is like a buffer between generation 0 and 2. Objects that survive a generation 1 GC are promoted to generation 2.</li>
+<li>Generation 2 contains long-lived objects such as static objects that are created at the very beginning of the application and has been living since then. Large objects are usually also collected here. Objects that survive a generation 2 GC remain generation 2.</li>
+<li>GC that occurs in a generation will also process all the younger generations. For example, a generation 1 GC will collect objects in generation 1 and 0; a generation 2 GC will collect objects in all 3 generations (full GC).</li>
+</ul>
+<p>The GC process in .NET sounds pretty promising. Most of the time, the GC can be counted on. However, for unmanaged resources, explicit cleanup needs too be done. Unmanaged resources can be objects that wrap an operating system resource (i.e. file handle, window handle, network connection, database connection).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yarinamomo.github.io/2022/11/22/CSharp/" data-id="clay4vvcp0001tr3577zf2f0q" data-title="Interesting things in C#" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/11/20/CPP/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C++ - Pointer, Reference, Virtual Methods and Struct</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+        this.page.url = 'https://yarinamomo.github.io/2022/11/22/CSharp/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '1669071600000'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://https-yarinamomo-github-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">ABOUT</h3>
+    <div class="widget">
+      <div class="row">
+        <img src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/profile.jpg" alt="profile picture" width=80% >
+      </div>
+      Email: <b>yarinawangmomo@gmail.com</b>
+      LinkedIn：<a target="_blank" rel="noopener" href="https://www.linkedin.com/in/yiran-wang-a6201a9a/">Yiran Wang</a>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioinformatics/" rel="tag">Bioinformatics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computer-Vision/" rel="tag">Computer Vision</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Configuration/" rel="tag">Configuration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-learning/" rel="tag">Machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bioinformatics/" style="font-size: 10px;">Bioinformatics</a> <a href="/tags/Computer-Vision/" style="font-size: 10px;">Computer Vision</a> <a href="/tags/Configuration/" style="font-size: 15px;">Configuration</a> <a href="/tags/Machine-learning/" style="font-size: 20px;">Machine learning</a> <a href="/tags/Programming/" style="font-size: 15px;">Programming</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/11/22/CSharp/">Interesting things in C#</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/20/CPP/">C++ - Pointer, Reference, Virtual Methods and Struct</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/11/TPE/">Hyperparameter Optimization TPE</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/18/DCA/">Explanation on DCA (Deep Count Autoencoder)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/12/GPUCPU/">Is GPU much faster than CPU in machine learning?</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yiran Wang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
