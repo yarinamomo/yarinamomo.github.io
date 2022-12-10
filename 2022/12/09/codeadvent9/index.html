@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Christmas Advent of Code 2022 - Day 9 | Something about Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Advent is a Christmas season of preparation for the celebration of the birth and the second coming of Jesus Christ. It begins on the fourth Sunday before Christmas, and ends on the Christmas Eve. An A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Christmas Advent of Code 2022 - Day 9">
+<meta property="og:url" content="https://yarinamomo.github.io/2022/12/09/codeadvent9/index.html">
+<meta property="og:site_name" content="Something about Learning">
+<meta property="og:description" content="Advent is a Christmas season of preparation for the celebration of the birth and the second coming of Jesus Christ. It begins on the fourth Sunday before Christmas, and ends on the Christmas Eve. An A">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-09T11:17:16.000Z">
+<meta property="article:modified_time" content="2022-12-10T13:54:40.343Z">
+<meta property="article:author" content="Yiran Wang">
+<meta property="article:tag" content="Programming">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Something about Learning" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Something about Learning</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yarinamomo.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-codeadvent9" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/09/codeadvent9/" class="article-date">
+  <time class="dt-published" datetime="2022-12-09T11:17:16.000Z" itemprop="datePublished">2022-12-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Christmas Advent of Code 2022 - Day 9
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Advent is a Christmas season of preparation for the celebration of the birth and the second coming of Jesus Christ. It begins on the fourth Sunday before Christmas, and ends on the Christmas Eve. An Advent calendar is used to count the days of Advent from the first Sunday to Christmas Eve. </p>
+<p>There are many Advent calendar products for customers to buy. They usually contains 24 or 25 (usually starts on December 1st for the purpose of convenience) hidden items that one can open one per day. <a target="_blank" rel="noopener" href="https://adventofcode.com/2022">Advent of Code</a> is such an Advent calendar of programming puzzles made by <a target="_blank" rel="noopener" href="http://was.tl/">Eric Wastl</a> which one can solve one task per day for fun! It accompanies us to go through the darkest days of the year. </p>
+<p>Today is the 9th day of December and the Advent code puzzle for today is quite interesting, so I post my solution here to share! For the other days, my solution was&#x2F;will be updated on my <a target="_blank" rel="noopener" href="https://github.com/yarinamomo/AdventCalander">Github</a>. The puzzles are solved in Python and written in notebook for presentation reason.</p>
+<span id="more"></span>
+
+<h3 id="Day-9-Part-1"><a href="#Day-9-Part-1" class="headerlink" title="Day 9 Part 1"></a>Day 9 Part 1</h3><p>The original description of the code puzzle is <a target="_blank" rel="noopener" href="https://adventofcode.com/2022/day/9">here</a>. I formulated the task as following:</p>
+<p>There is a bridge which one can simulate its stability by measuring the movements of the rope (where H is the Head of the rope, T is the Tail). Given a set  of movements of H (in the data file). It looks like for example (where R, U, L, D means moving right, up, left, down, the number means steps. So R 4 means H moves 4 steps to the right):</p>
+<pre><code>R 4
+U 4
+L 3
+D 1
+R 4
+D 1
+L 5
+R 2
+</code></pre>
+<p>There is also a rule for how T moves with H:</p>
+<ul>
+<li><p>If the head is ever two steps <strong>directly</strong> up, down, left, or right from the tail, the tail must also move one step in that direction so it remains close enough:</p>
+<pre><code>  .....    .....    .....
+  .TH.. -&gt; .T.H. -&gt; ..TH.
+  .....    .....    .....
+</code></pre>
+</li>
+<li><p>Otherwise, if the head and tail aren’t touching and aren’t in the same row or column, the tail always moves one step diagonally to keep up:</p>
+<pre><code>  .....    .....    .....
+  .....    ..H..    ..H..
+  ..H.. -&gt; ..... -&gt; ..T..
+  .T...    .T...    .....
+  .....    .....    .....
+</code></pre>
+</li>
+</ul>
+<p>By following the movements of H according to the data file, and executing and movements of T following the above rules, one can simulate how the rope moves. Specifically, one wants to count up <strong>all of the positions the tail visited at least once</strong> (including the start position s). For example, if the initial state is </p>
+<pre><code>......
+......
+......
+......
+H.....  (H covers T, s)
+</code></pre>
+<p>The above example of movements of H, the positions that T has visited is:</p>
+<pre><code>..##..
+...##.
+.####.
+....#.
+s###..
+</code></pre>
+<p>which gives a total number of positions of <strong>13</strong>.</p>
+<p>Calculate how many positions does the tail of the rope visit at least once according to the given data file.</p>
+<p>After formulating the task, we know that the head&#x2F;H follows exactly the movements from the data file, while the tail&#x2F;T follows the above rule based on H’s position. Then we can create two functions, one for moving H, one for moving T. Note that the tail follows the head every move, so the functions should move ONE step a time.</p>
+<p>I first read the data file which contains the instructions about how the head&#x2F;H should move:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_moves = pd.read_table(&#x27;data/input9.txt&#x27;, sep=&quot; &quot;, header=None).to_numpy()</span><br></pre></td></tr></table></figure>
+
+<p>Then I wrote the methods to move the head&#x2F;H (<strong>moveH</strong>) based on the current position of H and the instruction, and to move the tail&#x2F;T (<strong>moveT</strong>) by following the rule given above, based on the current position of T and the current position of H.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">def _checkEdges(pos_to):</span><br><span class="line">    global nrow, ncol</span><br><span class="line">    if pos_to[0] &lt; 0 or pos_to[0] &gt; nrow - 1 or pos_to[1] &lt; 0 or pos_to[1] &gt; ncol - 1:</span><br><span class="line">        print(&#x27;Map too small!&#x27;,pos_to)</span><br><span class="line">    return pos_to</span><br><span class="line">    </span><br><span class="line">def _markPosT(pos_T):</span><br><span class="line">    global state</span><br><span class="line">    state[pos_T[0],pos_T[1]] = 1</span><br><span class="line">    </span><br><span class="line">def _isTouching(pos_H, pos_T):</span><br><span class="line">    return pos_T == pos_H or (abs(pos_T[0]-pos_H[0]) &lt;= 1 and abs(pos_T[1]-pos_H[1]) &lt;= 1)</span><br><span class="line">    </span><br><span class="line">def moveH(pos_from, direction):</span><br><span class="line">    if direction in [&#x27;L&#x27;,&#x27;R&#x27;]:</span><br><span class="line">        pos_to = [pos_from[0], pos_from[1]-1 if direction == &#x27;L&#x27; else pos_from[1]+1]</span><br><span class="line">    else: # [&#x27;U&#x27;,&#x27;D&#x27;]</span><br><span class="line">        pos_to = [pos_from[0]-1 if direction == &#x27;U&#x27; else pos_from[0]+1, pos_from[1]]</span><br><span class="line">    pos_to = _checkEdges(pos_to)</span><br><span class="line">    return pos_to</span><br><span class="line">    </span><br><span class="line">def moveT(pos_from, pos_H, if_track=True):</span><br><span class="line">    if _isTouching(pos_from, pos_H):</span><br><span class="line">        pos_to = pos_from</span><br><span class="line">    else:</span><br><span class="line">        if pos_H[1] != pos_from[1] and pos_H[0] != pos_from[0]: # move diagonally</span><br><span class="line">            pos_to = [pos_from[0], pos_from[1]+1] if pos_H[1] &gt; pos_from[1] else [pos_from[0], pos_from[1]-1]</span><br><span class="line">            pos_to = [pos_to[0]+1, pos_to[1]] if pos_H[0] &gt; pos_to[0] else [pos_to[0]-1, pos_to[1]]</span><br><span class="line">            pos_to = _checkEdges(pos_to)</span><br><span class="line">            if if_track: _markPosT(pos_to)</span><br><span class="line">        elif pos_H[1] != pos_from[1]: # move directly up/down</span><br><span class="line">            pos_to = [pos_from[0], pos_from[1]+1] if pos_H[1] &gt; pos_from[1] else [pos_from[0], pos_from[1]-1]</span><br><span class="line">            pos_to = _checkEdges(pos_to)</span><br><span class="line">            if if_track: _markPosT(pos_to)</span><br><span class="line">        else: # move directly left/right</span><br><span class="line">            pos_to = [pos_from[0]+1, pos_from[1]] if pos_H[0] &gt; pos_from[0] else [pos_from[0]-1, pos_from[1]]</span><br><span class="line">            pos_to = _checkEdges(pos_to)</span><br><span class="line">            if if_track: _markPosT(pos_to)</span><br><span class="line">    return pos_to</span><br></pre></td></tr></table></figure>
+
+<p>Then I set up the environment, where the map size is set up to a large enough size:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nrow = 600</span><br><span class="line">ncol = 600</span><br><span class="line">pos_s = [nrow//2,ncol//2] # start position</span><br><span class="line">pos_H = pos_s</span><br><span class="line">pos_T = pos_s</span><br><span class="line">state = np.zeros((nrow, ncol), dtype=int)</span><br><span class="line">state[pos_T[0],pos_T[1]] = 1 # T has visited</span><br></pre></td></tr></table></figure>
+
+<p>Then we can try to test it on the given smaller test example (saved in my <a target="_blank" rel="noopener" href="https://github.com/yarinamomo/AdventCalander">Github</a> data&#x2F;input9_test1.txt) first, since it is easier to debug if anything goes wrong. One can also print the state map (can set to a smaller size if the data is fewer) to debug visually. After finishing debugging, we can now run the code on the full data file (data&#x2F;input9.txt)!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for move_H in data_moves:</span><br><span class="line">    for i in range(move_H[1]):</span><br><span class="line">        pos_H = moveH(pos_H, move_H[0])</span><br><span class="line">        pos_T = moveT(pos_T, pos_H)</span><br><span class="line">print(&#x27;Current position of H&#x27;, pos_H)</span><br><span class="line">print(&#x27;Current position of T&#x27;, pos_T)</span><br><span class="line">print(&#x27;All positions of T has visited&#x27;, sum(sum(state)))</span><br></pre></td></tr></table></figure>
+
+<p>Now we successfully simulated the movements of the rope with a head knot and a tail knot, and tracked how the tail knot moved after all the movements.</p>
+<h3 id="Day-9-Part-2"><a href="#Day-9-Part-2" class="headerlink" title="Day 9 Part 2"></a>Day 9 Part 2</h3><p>The second part of the task comes with an extension of part one. In part one, there are only two knots: head&#x2F;H and tail&#x2F;T. In part two, rather than two knots (H and T), one now must simulate a rope consisting of <strong>10</strong> knots. One knot is still the head of the rope and moves according to the series of motions (the data file). Each knot further down the rope follows the knot in front of it using the same rules as before. And now, only the positions visited by the <strong>last knot (9)</strong> need to be tracked.</p>
+<p>For a second example:</p>
+<pre><code>R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20
+    
+</code></pre>
+<p>The state after the movements now become:</p>
+<pre><code>..........................
+..........................
+..........................
+..........................
+..........................
+..........................
+..........................
+..........................
+..........................
+#.........................
+#.............###.........
+#............#...#........
+.#..........#.....#.......
+..#..........#.....#......
+...#........#.......#.....
+....#......s.........#....
+.....#..............#.....
+......#............#......
+.......#..........#.......
+........#........#........
+.........########.........
+</code></pre>
+<p>For the second example, the tail (9) visits 36 positions (including s) at least once.</p>
+<p>So for this part, the head&#x2F;H doesn’t change, which means that we can still use the <strong>moveH</strong> function for it. For the tails (9 tails instead of 1 now), each one follows the previous one (new head) based on the same rule of moving tail in part one, which means we can reuse the same <strong>moveT</strong> function for all the tails by updating the corresponding <em>head</em>. And now only the real tail (the last knot) needs to be tracked.</p>
+<p>Then we setup the environment for this one. (Before trying the full data file, one can still try the code first on the given example (data&#x2F;input9_test2.txt) and make sure the code works for that.)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">nrow = 600</span><br><span class="line">ncol = 600</span><br><span class="line">pos_s = [nrow//2,ncol//2] # start position</span><br><span class="line">pos_H = pos_s</span><br><span class="line">pos_Ts=[]</span><br><span class="line">for i in range(9):</span><br><span class="line">    pos_Ts.append(pos_s)</span><br><span class="line">state = np.zeros((nrow, ncol), dtype=int)</span><br><span class="line">state[pos_Ts[0][0],pos_Ts[0][1]] = 1 # any T has visited</span><br></pre></td></tr></table></figure>
+
+<p>Then execute the moves and mark all the places the last knot has visited!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for move_H in data_moves:</span><br><span class="line">    for i in range(move_H[1]):</span><br><span class="line">        pos_H = moveH(pos_H, move_H[0])</span><br><span class="line">        for i in range(9):</span><br><span class="line">            pos_from = pos_H if i == 0 else pos_Ts[i-1]</span><br><span class="line">            iftrack = i == 8</span><br><span class="line">            pos_Ts[i] = moveT(pos_Ts[i], pos_from, iftrack)</span><br><span class="line">print(&#x27;Current position of H&#x27;, pos_H)</span><br><span class="line">print(&#x27;Current position of T&#x27;, pos_Ts)</span><br><span class="line">print(&#x27;All positions of T has visited&#x27;, sum(sum(state)))</span><br></pre></td></tr></table></figure>
+
+<p>That is it for Day nine! Isn’t it interesting?</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yarinamomo.github.io/2022/12/09/codeadvent9/" data-id="clbhzxmvw0000z5i0fq482n56" data-title="Christmas Advent of Code 2022 - Day 9" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/12/05/DataStructure/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Exploring some Data Structures</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+        this.page.url = 'https://yarinamomo.github.io/2022/12/09/codeadvent9/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '1670584636000'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://https-yarinamomo-github-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">ABOUT</h3>
+    <div class="widget">
+      <div class="row">
+        <img src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/profile.jpg" alt="profile picture" width=80% >
+      </div>
+      Email: <b>yarinawangmomo@gmail.com</b>
+      LinkedIn：<a target="_blank" rel="noopener" href="https://www.linkedin.com/in/yiran-wang-a6201a9a/">Yiran Wang</a>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioinformatics/" rel="tag">Bioinformatics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computer-Vision/" rel="tag">Computer Vision</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Configuration/" rel="tag">Configuration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-learning/" rel="tag">Machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bioinformatics/" style="font-size: 10px;">Bioinformatics</a> <a href="/tags/Computer-Vision/" style="font-size: 10px;">Computer Vision</a> <a href="/tags/Configuration/" style="font-size: 13.33px;">Configuration</a> <a href="/tags/Machine-learning/" style="font-size: 16.67px;">Machine learning</a> <a href="/tags/Programming/" style="font-size: 20px;">Programming</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/12/09/codeadvent9/">Christmas Advent of Code 2022 - Day 9</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/05/DataStructure/">Exploring some Data Structures</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/22/CSharp/">Interesting things in C#</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/20/CPP/">C++ - Pointer, Reference, Virtual Methods and Struct</a>
+          </li>
+        
+          <li>
+            <a href="/2022/11/11/TPE/">Hyperparameter Optimization TPE</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Yiran Wang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
