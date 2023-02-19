@@ -6,12 +6,12 @@
   
   <title>Static Program Analysis (2) - DFA | Something about Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about DFA. Here Method Ca">
+  <meta name="description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about Data Flow Analysis.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Static Program Analysis (2) - DFA">
 <meta property="og:url" content="https://yarinamomo.github.io/2023/02/03/sa2/index.html">
 <meta property="og:site_name" content="Something about Learning">
-<meta property="og:description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about DFA. Here Method Ca">
+<meta property="og:description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about Data Flow Analysis.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_2.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_22.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_23.png">
 <meta property="article:published_time" content="2023-02-02T23:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-19T19:20:00.622Z">
+<meta property="article:modified_time" content="2023-02-19T19:26:25.971Z">
 <meta property="article:author" content="Yiran Wang">
 <meta property="article:tag" content="Programming">
 <meta property="article:tag" content="Static Analysis">
@@ -123,7 +123,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found <a target="_blank" rel="noopener" href="https://pascal-group.bitbucket.io/teaching.html">here</a>. This note is mainly about DFA. Here Method Calls (Intra-procedural CFG) and Aliases are not covered, and will be introduced later (Inter-procedural Analysis and Pointer Analysis).</p>
+        <p>This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found <a target="_blank" rel="noopener" href="https://pascal-group.bitbucket.io/teaching.html">here</a>. This note is mainly about Data Flow Analysis. Here Method Calls (Intra-procedural CFG) and Aliases are not covered, and will be introduced later (Inter-procedural Analysis and Pointer Analysis).</p>
 <span id="more"></span>
 
 <h3 id="1-DFA"><a href="#1-DFA" class="headerlink" title="1. DFA"></a>1. DFA</h3><p>In the last note, we talk about Rice’s theorem which shows that there is no perfect static analysis, and we can either compromise soundness or completeness. This results in two types of analysis:</p>
@@ -142,8 +142,8 @@
 </ul>
 <p>There are mainly two ways of analysis:</p>
 <ul>
-<li>Forward Analysis： OUT[s] &#x3D; fs(IN[s])<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png"> </p></li>
-<li>Backward Analysis：IN[s]  &#x3D; fs(OUT[s])<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_2.png"> </p></li>
+<li>Forward Analysis： OUT[s] &#x3D; fs(IN[s])<p align="center"> <img width="30%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png"> </p></li>
+<li>Backward Analysis：IN[s]  &#x3D; fs(OUT[s])<p align="center"> <img width="30%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_2.png"> </p></li>
 </ul>
 <h3 id="2-DFA-Applications"><a href="#2-DFA-Applications" class="headerlink" title="2. DFA Applications"></a>2. DFA Applications</h3><h3 id="2-1-Reaching-Definitions-Analysis"><a href="#2-1-Reaching-Definitions-Analysis" class="headerlink" title="2.1 Reaching Definitions Analysis"></a>2.1 Reaching Definitions Analysis</h3><p>Reaching Definitions means:</p>
 <ul>
@@ -151,18 +151,18 @@
 </ul>
 <p>Reaching definitions can be used to detect possible undefined variables.</p>
 <p>Reaching Definitions Analysis is a <strong>may analysis</strong>. The analysis is usually designed as <strong>forward analysis</strong>. Data flow values, or the definitions of all the variables in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_3.png"> </p>
+<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_3.png"> </p>
 
 <p>The algorithm of Reaching Definitions Analysis (may analysis usually initialize OUT[B] as empty):</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_4.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_4.png"> </p>
 
 <h3 id="2-2-Live-Variables-Analysis"><a href="#2-2-Live-Variables-Analysis" class="headerlink" title="2.2 Live Variables Analysis"></a>2.2 Live Variables Analysis</h3><p>Live variables analysis tells whether the value of variable v at program point p could be used along some path in CFG starting at p. If so, v is live at p; otherwise, v is dead at p.</p>
 <p>Information of live variables can be used for register allocations.</p>
 <p>Live Variables Analysis is also a <strong>may analysis</strong>. The analysis is usually designed as <strong>backward analysis</strong>. Data flow values, or all the variables in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_5.png"> </p>
+<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_5.png"> </p>
 
 <p>The algorithm of Live Variables Analysis:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_6.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_6.png"> </p>
 
 
 <h3 id="2-3-Available-Expressions-Analysis"><a href="#2-3-Available-Expressions-Analysis" class="headerlink" title="2.3 Available Expressions Analysis"></a>2.3 Available Expressions Analysis</h3><p>Available Expressions means:</p>
@@ -175,47 +175,47 @@
 </ul>
 <p>This definition means at program point p, we can replace expression x op y by the result of its last evaluation. The information of available expressions can be used for detecting global common subexpressions.</p>
 <p>This analysis is a <strong>must analysis</strong>. The analysis is usually designed as <strong>forward analysis</strong>. Data flow values, or all the expressions in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_7.png"> </p>
+<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_7.png"> </p>
 
 <p>The algorithm of Available Expressions Analysis (unlike may analysis, must analysis usually initialize the OUT[B] as top&#x2F;full set):</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_8.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_8.png"> </p>
 
-<h3 id="2-4-Analysis-Comparison"><a href="#2-4-Analysis-Comparison" class="headerlink" title="2.4 Analysis Comparison"></a>2.4 Analysis Comparison</h3><p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_9.png"> </p>
+<h3 id="2-4-Analysis-Comparison"><a href="#2-4-Analysis-Comparison" class="headerlink" title="2.4 Analysis Comparison"></a>2.4 Analysis Comparison</h3><p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_9.png"> </p>
 
 
 <h3 id="3-DFA-Foundations"><a href="#3-DFA-Foundations" class="headerlink" title="3. DFA Foundations"></a>3. DFA Foundations</h3><p>Given a CFG (program) with k nodes, the iterative algorithm updates OUT[n] for every node n in each iteration. Each iteration takes an action F:V^k → V^k. X is a fixed point of function F if X &#x3D; F(X). The iterative algorithm reaches a <strong>fixed point</strong>.</p>
 <h3 id="3-1-Discrete-Mathematics"><a href="#3-1-Discrete-Mathematics" class="headerlink" title="3.1 Discrete Mathematics"></a>3.1 Discrete Mathematics</h3><p>To fully understand DFA analysis, let us first refresh some concepts in discrete math. </p>
 <ul>
-<li><strong>Partial Order</strong>: <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_10.png"> </p>
+<li><strong>Partial Order</strong>: <p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_10.png"> </p>
 
 <strong>Partial</strong> means for a pair of set elements in P, it is not necessary that every pair is comparable. For example: substring or subset operation:</li>
 </ul>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_11.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_11.png"> </p>
 
 <ul>
-<li><strong>Upper and Lower Bounds</strong> of a Partial Order set:<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_12.png"> </p>
+<li><strong>Upper and Lower Bounds</strong> of a Partial Order set:<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_12.png"> </p>
 
 <strong>Least Upper or Greatest Lower Bounds</strong> of a Partial Order set:</li>
 </ul>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_13.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_13.png"> </p>
 
 <p>  For example, for a poset S, the upper and lower bounds, the least upper and lower bounds are shown as below:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_14.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_14.png"> </p>
 
 <p>  Not every poset has Least Upper or Greatest Lower Bounds, but if a poset has, it will be unique.</p>
 <ul>
 <li><strong>Lattice</strong>: A poset is a lattice if every pair of its elements has a least upper bound and a greatest lower bound.</li>
 </ul>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_15.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_15.png"> </p>
 
 <p>  <strong>Semilattice</strong>: A poset is a semilattice if every pair of its elements has a least upper bound (join semilattice) OR a greatest lower bound (meet semilattice).</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_16.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_16.png"> </p>
 
 <p>  <strong>Complete Lattice</strong>: All subsets of a lattice have a least upper bound and a greatest lower bound.</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_17.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_17.png"> </p>
 
 <p>  Every finite lattice (P is finite) is a complete lattice. <strong>Complete lattice is mostly focused in DFA.</strong></p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_18.png"> </p>
+<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_18.png"> </p>
 
 <p>  <strong>Product Lattice</strong>: </p>
 <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_19.png"> </p>
@@ -250,7 +250,7 @@
 <li>F: transfer function.<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_22.png"> </p></li>
 </ul>
 <h3 id="3-5-Worklist-Algorithm"><a href="#3-5-Worklist-Algorithm" class="headerlink" title="3.5 Worklist Algorithm"></a>3.5 Worklist Algorithm</h3><p>It is an optimization of our Iterative Algorithm. It avoids repeating calculation of BB in each iteration:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_23.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_23.png"> </p>
 
 
 
