@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Static Program Analysis (2) - DFA | Something about Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about DFA. Here Method Ca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Static Program Analysis (2) - DFA">
+<meta property="og:url" content="https://yarinamomo.github.io/2023/02/03/sa2/index.html">
+<meta property="og:site_name" content="Something about Learning">
+<meta property="og:description" content="This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about DFA. Here Method Ca">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_2.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_3.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_4.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_5.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_6.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_7.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_8.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_9.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_10.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_11.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_12.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_13.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_14.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_15.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_16.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_17.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_18.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_19.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_20.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_21.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_22.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_23.png">
+<meta property="article:published_time" content="2023-02-02T23:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-19T19:20:00.622Z">
+<meta property="article:author" content="Yiran Wang">
+<meta property="article:tag" content="Programming">
+<meta property="article:tag" content="Static Analysis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Something about Learning" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Something about Learning</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yarinamomo.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sa2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/03/sa2/" class="article-date">
+  <time class="dt-published" datetime="2023-02-02T23:00:00.000Z" itemprop="datePublished">2023-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Static Program Analysis (2) - DFA
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>This is the second note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found <a target="_blank" rel="noopener" href="https://pascal-group.bitbucket.io/teaching.html">here</a>. This note is mainly about DFA. Here Method Calls (Intra-procedural CFG) and Aliases are not covered, and will be introduced later (Inter-procedural Analysis and Pointer Analysis).</p>
+<span id="more"></span>
+
+<h3 id="1-DFA"><a href="#1-DFA" class="headerlink" title="1. DFA"></a>1. DFA</h3><p>In the last note, we talk about Rice’s theorem which shows that there is no perfect static analysis, and we can either compromise soundness or completeness. This results in two types of analysis:</p>
+<ul>
+<li><strong>may analysis</strong>: outputs information that may be true (over-approximation) </li>
+<li><strong>must analysis</strong>: outputs information that must be true (under-approximation)</li>
+</ul>
+<p><strong>DFA</strong> (Data Flow Analysis) describes how data flows on CFG (Control Flow Graphs). More specifically, it shows how application-specific data (usually abstractions) flows (over&#x2F;under-approximation, or may&#x2F;must analysis) through the nodes (BBs, statements. By transfer functions), edges (control flows. By control-flow handling such as flow merging) of CFG of a program. Different DFA applications may have different data abstractions, different flow approximation strategies, different transfer functions, and different control-flow handlings.</p>
+<p>In each DFA application, the main task is to associate every program point with a data-flow value that represents an abstraction of the set of all possible <strong>program states</strong> that can be observed for that point. We use IN[s] and OUT[s] to represent the program state before and after a certain statement block s, and fs() for the transfer functions. Then the DFA becomes:</p>
+<ul>
+<li>to find a solution to a set of over&#x2F;under-approximation-directed constraints on the IN[s]’s and OUT[s]’s, for all statements s.<ul>
+<li>constraints based on semantics of statements (transfer functions fs())</li>
+<li>constraints based on the flows of control</li>
+</ul>
+</li>
+</ul>
+<p>There are mainly two ways of analysis:</p>
+<ul>
+<li>Forward Analysis： OUT[s] &#x3D; fs(IN[s])<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_1.png"> </p></li>
+<li>Backward Analysis：IN[s]  &#x3D; fs(OUT[s])<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_2.png"> </p></li>
+</ul>
+<h3 id="2-DFA-Applications"><a href="#2-DFA-Applications" class="headerlink" title="2. DFA Applications"></a>2. DFA Applications</h3><h3 id="2-1-Reaching-Definitions-Analysis"><a href="#2-1-Reaching-Definitions-Analysis" class="headerlink" title="2.1 Reaching Definitions Analysis"></a>2.1 Reaching Definitions Analysis</h3><p>Reaching Definitions means:</p>
+<ul>
+<li>A definition d at program point p reaches a point q if there is a path from p to q such that d is not “killed” along that path.</li>
+</ul>
+<p>Reaching definitions can be used to detect possible undefined variables.</p>
+<p>Reaching Definitions Analysis is a <strong>may analysis</strong>. The analysis is usually designed as <strong>forward analysis</strong>. Data flow values, or the definitions of all the variables in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_3.png"> </p>
+
+<p>The algorithm of Reaching Definitions Analysis (may analysis usually initialize OUT[B] as empty):</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_4.png"> </p>
+
+<h3 id="2-2-Live-Variables-Analysis"><a href="#2-2-Live-Variables-Analysis" class="headerlink" title="2.2 Live Variables Analysis"></a>2.2 Live Variables Analysis</h3><p>Live variables analysis tells whether the value of variable v at program point p could be used along some path in CFG starting at p. If so, v is live at p; otherwise, v is dead at p.</p>
+<p>Information of live variables can be used for register allocations.</p>
+<p>Live Variables Analysis is also a <strong>may analysis</strong>. The analysis is usually designed as <strong>backward analysis</strong>. Data flow values, or all the variables in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_5.png"> </p>
+
+<p>The algorithm of Live Variables Analysis:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_6.png"> </p>
+
+
+<h3 id="2-3-Available-Expressions-Analysis"><a href="#2-3-Available-Expressions-Analysis" class="headerlink" title="2.3 Available Expressions Analysis"></a>2.3 Available Expressions Analysis</h3><p>Available Expressions means:</p>
+<ul>
+<li>An expression x op y is available at program point p if <ul>
+<li>all paths from the entry to p must pass through the evaluation of x op y</li>
+<li>after the last evaluation of x op y, there is no redefinition of x or y</li>
+</ul>
+</li>
+</ul>
+<p>This definition means at program point p, we can replace expression x op y by the result of its last evaluation. The information of available expressions can be used for detecting global common subexpressions.</p>
+<p>This analysis is a <strong>must analysis</strong>. The analysis is usually designed as <strong>forward analysis</strong>. Data flow values, or all the expressions in a program, can be abstractly represented by bit vectors, and the transfer function and control flow are as below:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_7.png"> </p>
+
+<p>The algorithm of Available Expressions Analysis (unlike may analysis, must analysis usually initialize the OUT[B] as top&#x2F;full set):</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_8.png"> </p>
+
+<h3 id="2-4-Analysis-Comparison"><a href="#2-4-Analysis-Comparison" class="headerlink" title="2.4 Analysis Comparison"></a>2.4 Analysis Comparison</h3><p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_9.png"> </p>
+
+
+<h3 id="3-DFA-Foundations"><a href="#3-DFA-Foundations" class="headerlink" title="3. DFA Foundations"></a>3. DFA Foundations</h3><p>Given a CFG (program) with k nodes, the iterative algorithm updates OUT[n] for every node n in each iteration. Each iteration takes an action F:V^k → V^k. X is a fixed point of function F if X &#x3D; F(X). The iterative algorithm reaches a <strong>fixed point</strong>.</p>
+<h3 id="3-1-Discrete-Mathematics"><a href="#3-1-Discrete-Mathematics" class="headerlink" title="3.1 Discrete Mathematics"></a>3.1 Discrete Mathematics</h3><p>To fully understand DFA analysis, let us first refresh some concepts in discrete math. </p>
+<ul>
+<li><strong>Partial Order</strong>: <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_10.png"> </p>
+
+<strong>Partial</strong> means for a pair of set elements in P, it is not necessary that every pair is comparable. For example: substring or subset operation:</li>
+</ul>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_11.png"> </p>
+
+<ul>
+<li><strong>Upper and Lower Bounds</strong> of a Partial Order set:<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_12.png"> </p>
+
+<strong>Least Upper or Greatest Lower Bounds</strong> of a Partial Order set:</li>
+</ul>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_13.png"> </p>
+
+<p>  For example, for a poset S, the upper and lower bounds, the least upper and lower bounds are shown as below:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_14.png"> </p>
+
+<p>  Not every poset has Least Upper or Greatest Lower Bounds, but if a poset has, it will be unique.</p>
+<ul>
+<li><strong>Lattice</strong>: A poset is a lattice if every pair of its elements has a least upper bound and a greatest lower bound.</li>
+</ul>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_15.png"> </p>
+
+<p>  <strong>Semilattice</strong>: A poset is a semilattice if every pair of its elements has a least upper bound (join semilattice) OR a greatest lower bound (meet semilattice).</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_16.png"> </p>
+
+<p>  <strong>Complete Lattice</strong>: All subsets of a lattice have a least upper bound and a greatest lower bound.</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_17.png"> </p>
+
+<p>  Every finite lattice (P is finite) is a complete lattice. <strong>Complete lattice is mostly focused in DFA.</strong></p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_18.png"> </p>
+
+<p>  <strong>Product Lattice</strong>: </p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_19.png"> </p>
+
+<p>  A product lattice is a lattice. If a product lattice L is a product of complete lattices, then L is also complete.</p>
+<h3 id="3-2-Data-Flow-Analysis-Framework-via-Lattice"><a href="#3-2-Data-Flow-Analysis-Framework-via-Lattice" class="headerlink" title="3.2 Data Flow Analysis Framework via Lattice"></a>3.2 Data Flow Analysis Framework via Lattice</h3><p>Data flow analysis can be seen as iteratively applying transfer functions and meet&#x2F;join operations on the values of a lattice. A data flow analysis framework (D, L, F) consists of:</p>
+<ul>
+<li>D: a direction of data flow: forwards or backwards</li>
+<li>L: a lattice including domain of the values V and a meet ⊓ or join ⊔ operator (usually meet is used for must analysis, and join is for may analysis)</li>
+<li>F: a family of transfer functions from V to V</li>
+</ul>
+<p>The iterative algorithm (or the IN&#x2F;OUT equation system) produces a solution to a data flow analysis:</p>
+<ul>
+<li>The algorithm is guaranteed to terminate or reach to a fixed point.</li>
+<li>The solution is the best one (greatest or least fixed point).</li>
+<li>The complexity of the algorithm: worst case is the product of the lattice height and the number of nodes in the CFG, which is also the number of total iterations.</li>
+</ul>
+<p>The following figure provides a lattice view of may and must analysis:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_20.png"> </p>
+
+
+<h3 id="3-3-MOP"><a href="#3-3-MOP" class="headerlink" title="3.3 MOP"></a>3.3 MOP</h3><p>Meet-Over-All-Paths, or MOP, is another solution to DFA. MOP computes the data-flow values at the end of each path and apply join&#x2F;meet operator to these values to find their least upper or greatest lower bound. Since some paths may be not executable, it may be not fully precise. It is also impractical because it is unbounded and not enumerable.</p>
+<p>Compare to our iterative algorithm:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_21.png"> </p>
+
+
+<h3 id="3-4-Constant-Propagation"><a href="#3-4-Constant-Propagation" class="headerlink" title="3.4 Constant Propagation"></a>3.4 Constant Propagation</h3><p>Given a variable x at program point p, Constant Propagation determines whether x is guaranteed to hold a constant value at p. It is a must analysis, and not distributive.</p>
+<p>The data flow analysis framework for Constant Propagation consists of:</p>
+<ul>
+<li>D: forwards direction</li>
+<li>L: lattice. domain of values (UNDEF - constants - NAC), meet operator.</li>
+<li>F: transfer function.<p align="center"> <img width="50%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_22.png"> </p></li>
+</ul>
+<h3 id="3-5-Worklist-Algorithm"><a href="#3-5-Worklist-Algorithm" class="headerlink" title="3.5 Worklist Algorithm"></a>3.5 Worklist Algorithm</h3><p>It is an optimization of our Iterative Algorithm. It avoids repeating calculation of BB in each iteration:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/DFA_23.png"> </p>
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yarinamomo.github.io/2023/02/03/sa2/" data-id="clebrxdsq0000yk35a20o8stm" data-title="Static Program Analysis (2) - DFA" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Static-Analysis/" rel="tag">Static Analysis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/01/sa1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Static Program Analysis (1) - Intro and IR</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+        this.page.url = 'https://yarinamomo.github.io/2023/02/03/sa2/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '1675378800000'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://https-yarinamomo-github-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">ABOUT</h3>
+    <div class="widget">
+      <div class="row">
+        <img src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/profile.jpg" alt="profile picture" width=80% >
+      </div>
+      Email: <b>yarinawangmomo@gmail.com</b>
+      LinkedIn：<a target="_blank" rel="noopener" href="https://www.linkedin.com/in/yiran-wang-a6201a9a/">Yiran Wang</a>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioinformatics/" rel="tag">Bioinformatics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computer-Vision/" rel="tag">Computer Vision</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Configuration/" rel="tag">Configuration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Pattern/" rel="tag">Design Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-learning/" rel="tag">Machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Static-Analysis/" rel="tag">Static Analysis</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bioinformatics/" style="font-size: 10px;">Bioinformatics</a> <a href="/tags/Computer-Vision/" style="font-size: 10px;">Computer Vision</a> <a href="/tags/Configuration/" style="font-size: 13.33px;">Configuration</a> <a href="/tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="/tags/Machine-learning/" style="font-size: 16.67px;">Machine learning</a> <a href="/tags/Programming/" style="font-size: 20px;">Programming</a> <a href="/tags/Static-Analysis/" style="font-size: 13.33px;">Static Analysis</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/03/sa2/">Static Program Analysis (2) - DFA</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/01/sa1/">Static Program Analysis (1) - Intro and IR</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/07/designpatterns/">Software Design Pattern (1) - Creational, Factory</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/09/codeadvent9/">Christmas Advent of Code 2022 - Day 9</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/05/DataStructure/">Exploring some Data Structures</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Yiran Wang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
