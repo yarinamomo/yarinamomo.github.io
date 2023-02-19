@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_4.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_5.png">
 <meta property="article:published_time" content="2023-01-31T23:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-19T12:37:27.857Z">
+<meta property="article:modified_time" content="2023-02-19T12:39:36.702Z">
 <meta property="article:author" content="Yiran Wang">
 <meta property="article:tag" content="Programming">
 <meta property="article:tag" content="Static Analysis">
@@ -137,7 +137,7 @@
 <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_2.png"> </p>
 
 <p>The main difference between 3AC and SSA is that SSA gives each definition a new name and propagate the new name to subsequent uses:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_3.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_3.png"> </p>
 
 <p>In thhe case of control flow merging, SSA will assign a new operator <strong>phi</strong> to select values at the merge nodes:</p>
 <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_4.png"> </p>
@@ -160,7 +160,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-2-CFG-and-BB"><a href="#2-2-CFG-and-BB" class="headerlink" title="2.2 CFG and BB"></a>2.2 CFG and BB</h4><p>Control Flow Analysis usually refers to building <strong>CFG</strong> (control flow graphs) which serves as thhe basic structure for static analysis. The node of a CFG can be a 3AC instruction, but usually a BB (<strong>Basic Block</strong>, maximal sequences of consecutive 3AC instructions with the properties that can be entered only at the beginning AND exited only at the end).</p>
+<h4 id="2-2-CFG-and-BB"><a href="#2-2-CFG-and-BB" class="headerlink" title="2.2 CFG and BB"></a>2.2 CFG and BB</h4><p>Control Flow Analysis usually refers to building <strong>CFG</strong> (control flow graphs) which serves as thhe basic structure for static analysis. The node of a CFG can be a 3AC instruction, but usually a <strong>BB</strong> (Basic Block, maximal sequences of consecutive 3AC instructions with the properties that can be entered only at the beginning AND exited only at the end).</p>
 <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IR_5.png"> </p>
 
 
