@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Static Program Analysis (3) - Inter-procedural Analysis | Something about Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="This is the third note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about Inter-procedural Ana">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Static Program Analysis (3) - Inter-procedural Analysis">
+<meta property="og:url" content="https://yarinamomo.github.io/2023/03/15/sa3/index.html">
+<meta property="og:site_name" content="Something about Learning">
+<meta property="og:description" content="This is the third note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found here. This note is mainly about Inter-procedural Ana">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_1.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_3.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_2.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_4.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_5.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_6.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_7.png">
+<meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_8.png">
+<meta property="article:published_time" content="2023-03-14T23:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-02T20:42:10.476Z">
+<meta property="article:author" content="Yiran Wang">
+<meta property="article:tag" content="Programming">
+<meta property="article:tag" content="Static Analysis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Something about Learning" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Something about Learning</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://yarinamomo.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sa3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/03/15/sa3/" class="article-date">
+  <time class="dt-published" datetime="2023-03-14T23:00:00.000Z" itemprop="datePublished">2023-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Static Program Analysis (3) - Inter-procedural Analysis
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>This is the third note of the online course “Static Program Analysis” developed by Yue Li and Tian Tan. The course page with materials can be found <a target="_blank" rel="noopener" href="https://pascal-group.bitbucket.io/teaching.html">here</a>. This note is mainly about Inter-procedural Analysis, including call graph construction and inter-procedural data flow analysis.</p>
+<p>The previous notes are all about intra-procedual analysis. However, intra-procedural analysis may not be able to determine how data is passed between two functions or how a variable is modified across multiple function calls. Inter-procedural analysis, on the other hand, can provide a more comprehensive understanding of program behavior, including how data flows between functions, and how control flows between different parts of the program. Thus it can provide more precise approximation when method calls are involved.</p>
+<p>The first step in performing an inter-procedural analysis is to build a program representation that captures the behavior of the program across multiple functions. This can be done using various techniques such as call graphs, control flow graphs, or abstract syntax trees. Let’s start with call graphs.</p>
+<span id="more"></span>
+
+<h3 id="1-Call-Graph-Construction"><a href="#1-Call-Graph-Construction" class="headerlink" title="1. Call Graph Construction"></a>1. Call Graph Construction</h3><p>A call graph is a directed graph that represents the calling relationships between functions in a program. Each node in the call graph represents a function, and edges referring to calling relationship from call-sites to their target methods (callees). </p>
+<p>For example, the following programs can be represented by a call graph:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_1.png"> </p>
+
+<p>Different programming languages may have different ways of constructing call graphs. In a language like C or C++, function calls can be made using function pointers, which can introduce additional complexity into the call graph. In object-oriented languages (OOPLs) like Java or C#, function calls can be made through inheritance and polymorphism, which requires additional analysis to determine the specific function that will be called at runtime. </p>
+<p>For an OOPL, i.e., Java, polymorphism can be achieved through virtual calls:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_3.png"> </p>
+
+<p>Virtual calls are resolved during runtime by the type of the receiver object (c) and the method signature at the call site (m). A signature is class type, method name, and descriptor(return type + parameter types), which can be represented as &lt;C: T foo(P,Q,R)&gt; or C.foo(P,Q,R). To dispatch such calls statically, we define function Dispatch(c,m) to simulate the procedure of runtime resolution:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_2.png"> </p>
+
+<h4 id="1-1-CHA-Dispatch-method-calls"><a href="#1-1-CHA-Dispatch-method-calls" class="headerlink" title="1.1 CHA - Dispatch method calls"></a>1.1 CHA - Dispatch method calls</h4><p>One way would be <strong>Class Hierarchy Analysis (CHA)</strong>. It uses the inheritance structure of the program to resolve a virtual call, based on the <strong>declared type</strong> of <strong>receiver variable</strong> of the call site. In particular, it assumes the receiver object (c) may point to objects of class C or all subclasses of C, then look up the class hierarchy of class C to resolve target methods, like the following shows.</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_4.png"> </p>
+
+<p>CHA can be efficient, since it only considers the declared type of receiver variable (and its inheritance hierarchy) at the call site and ignores data and control flow information. Thus, it is also less precise and easily introduce spurious target methods. For example:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_5.png"> </p>
+
+<h4 id="1-2-CHA-Call-graph-construction"><a href="#1-2-CHA-Call-graph-construction" class="headerlink" title="1.2 CHA - Call graph construction"></a>1.2 CHA - Call graph construction</h4><p>With the Resolve (CHA) method to dispatch method calls, we now can construct call graphs. Call graph building starts from entry methods (i.e., main method), and resolve target methods for each call cite (cs) in each reachable method (m) - <strong>Resolve(cs)</strong>. Worklist algorithm is used for updating and handling reachable methods.</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_6.png"> </p>
+
+<p>An example of constructing call graph via CHA resolve method is as below:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_7.png"> </p>
+
+<h3 id="2-Inter-procedural-Control-Flow-Graph"><a href="#2-Inter-procedural-Control-Flow-Graph" class="headerlink" title="2. Inter-procedural Control Flow Graph"></a>2. Inter-procedural Control Flow Graph</h3><p>In previous notes, we have learned about CFG which represents structure of an individual method, while ICFG represents structure of the whole program. ICFG can be used to perform inter-procedural analysis. ICFG is similar to CFG but withh two additional edges:</p>
+<ul>
+<li>Call edges: from call sites to entry nodes of their callees</li>
+<li>Return edges: from exit nodes of their callees to the statements following the call cites</li>
+</ul>
+<h3 id="3-Inter-procedural-Data-Flow-Analysis"><a href="#3-Inter-procedural-Data-Flow-Analysis" class="headerlink" title="3. Inter-procedural Data Flow Analysis"></a>3. Inter-procedural Data Flow Analysis</h3><p>With ICFG representing the program, it is possible to analyze data flow in the whole program. To define how data flows through call edges and return edges, edge transfer functions need to define additionally (addition to the node transfer function with CFG).</p>
+<ul>
+<li>Call edge transfer: pass argument values</li>
+<li>Return edge transfer: pass return values</li>
+</ul>
+<p>The following shows an example of <strong>Inter-procedural Constant Propagation</strong>:</p>
+<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_8.png"> </p>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://yarinamomo.github.io/2023/03/15/sa3/" data-id="clfzvctgf00001p35a0ogdvca" data-title="Static Program Analysis (3) - Inter-procedural Analysis" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Static-Analysis/" rel="tag">Static Analysis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/03/sa2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Static Program Analysis (2) - DFA</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script>
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+      var disqus_config = function () {
+        this.page.url = 'https://yarinamomo.github.io/2023/03/15/sa3/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '1678834800000'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://https-yarinamomo-github-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">ABOUT</h3>
+    <div class="widget">
+      <div class="row">
+        <img src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/profile.jpg" alt="profile picture" width=80% >
+      </div>
+      Email: <b>yarinawangmomo@gmail.com</b>
+      LinkedIn：<a target="_blank" rel="noopener" href="https://www.linkedin.com/in/yiran-wang-a6201a9a/">Yiran Wang</a>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bioinformatics/" rel="tag">Bioinformatics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Computer-Vision/" rel="tag">Computer Vision</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Configuration/" rel="tag">Configuration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Design-Pattern/" rel="tag">Design Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-learning/" rel="tag">Machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Programming/" rel="tag">Programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Static-Analysis/" rel="tag">Static Analysis</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Bioinformatics/" style="font-size: 10px;">Bioinformatics</a> <a href="/tags/Computer-Vision/" style="font-size: 10px;">Computer Vision</a> <a href="/tags/Configuration/" style="font-size: 13.33px;">Configuration</a> <a href="/tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="/tags/Machine-learning/" style="font-size: 16.67px;">Machine learning</a> <a href="/tags/Programming/" style="font-size: 20px;">Programming</a> <a href="/tags/Static-Analysis/" style="font-size: 16.67px;">Static Analysis</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/15/sa3/">Static Program Analysis (3) - Inter-procedural Analysis</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/03/sa2/">Static Program Analysis (2) - DFA</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/01/sa1/">Static Program Analysis (1) - Intro and IR</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/07/designpatterns/">Software Design Pattern (1) - Creational, Factory</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/09/codeadvent9/">Christmas Advent of Code 2022 - Day 9</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Yiran Wang<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
