@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_7.png">
 <meta property="og:image" content="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_8.png">
 <meta property="article:published_time" content="2023-03-14T23:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-02T20:42:10.476Z">
+<meta property="article:modified_time" content="2023-04-02T21:07:59.805Z">
 <meta property="article:author" content="Yiran Wang">
 <meta property="article:tag" content="Programming">
 <meta property="article:tag" content="Static Analysis">
@@ -115,26 +115,26 @@
 
 <h3 id="1-Call-Graph-Construction"><a href="#1-Call-Graph-Construction" class="headerlink" title="1. Call Graph Construction"></a>1. Call Graph Construction</h3><p>A call graph is a directed graph that represents the calling relationships between functions in a program. Each node in the call graph represents a function, and edges referring to calling relationship from call-sites to their target methods (callees). </p>
 <p>For example, the following programs can be represented by a call graph:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_1.png"> </p>
+<p align="center"> <img width="60%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_1.png"> </p>
 
 <p>Different programming languages may have different ways of constructing call graphs. In a language like C or C++, function calls can be made using function pointers, which can introduce additional complexity into the call graph. In object-oriented languages (OOPLs) like Java or C#, function calls can be made through inheritance and polymorphism, which requires additional analysis to determine the specific function that will be called at runtime. </p>
 <p>For an OOPL, i.e., Java, polymorphism can be achieved through virtual calls:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_3.png"> </p>
+<p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_3.png"> </p>
 
 <p>Virtual calls are resolved during runtime by the type of the receiver object (c) and the method signature at the call site (m). A signature is class type, method name, and descriptor(return type + parameter types), which can be represented as &lt;C: T foo(P,Q,R)&gt; or C.foo(P,Q,R). To dispatch such calls statically, we define function Dispatch(c,m) to simulate the procedure of runtime resolution:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_2.png"> </p>
+<p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_2.png"> </p>
 
 <h4 id="1-1-CHA-Dispatch-method-calls"><a href="#1-1-CHA-Dispatch-method-calls" class="headerlink" title="1.1 CHA - Dispatch method calls"></a>1.1 CHA - Dispatch method calls</h4><p>One way would be <strong>Class Hierarchy Analysis (CHA)</strong>. It uses the inheritance structure of the program to resolve a virtual call, based on the <strong>declared type</strong> of <strong>receiver variable</strong> of the call site. In particular, it assumes the receiver object (c) may point to objects of class C or all subclasses of C, then look up the class hierarchy of class C to resolve target methods, like the following shows.</p>
 <p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_4.png"> </p>
 
 <p>CHA can be efficient, since it only considers the declared type of receiver variable (and its inheritance hierarchy) at the call site and ignores data and control flow information. Thus, it is also less precise and easily introduce spurious target methods. For example:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_5.png"> </p>
+<p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_5.png"> </p>
 
 <h4 id="1-2-CHA-Call-graph-construction"><a href="#1-2-CHA-Call-graph-construction" class="headerlink" title="1.2 CHA - Call graph construction"></a>1.2 CHA - Call graph construction</h4><p>With the Resolve (CHA) method to dispatch method calls, we now can construct call graphs. Call graph building starts from entry methods (i.e., main method), and resolve target methods for each call cite (cs) in each reachable method (m) - <strong>Resolve(cs)</strong>. Worklist algorithm is used for updating and handling reachable methods.</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_6.png"> </p>
+<p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_6.png"> </p>
 
 <p>An example of constructing call graph via CHA resolve method is as below:</p>
-<p align="center"> <img width="80%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_7.png"> </p>
+<p align="center"> <img width="70%" src="https://github.com/yarinamomo/yarinamomo.github.io/raw/main/images/SA/IPA_7.png"> </p>
 
 <h3 id="2-Inter-procedural-Control-Flow-Graph"><a href="#2-Inter-procedural-Control-Flow-Graph" class="headerlink" title="2. Inter-procedural Control Flow Graph"></a>2. Inter-procedural Control Flow Graph</h3><p>In previous notes, we have learned about CFG which represents structure of an individual method, while ICFG represents structure of the whole program. ICFG can be used to perform inter-procedural analysis. ICFG is similar to CFG but withh two additional edges:</p>
 <ul>
