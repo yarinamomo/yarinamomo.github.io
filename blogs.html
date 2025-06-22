@@ -1,0 +1,13 @@
+---
+layout: default
+title: Blogs
+---
+<section>
+  {% for post in site.posts %}
+    <article>
+      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      <p>{{ post.excerpt }}</p>
+      <small>{{ post.date | date: "%B %d, %Y" }}</small>
+    </article>
+  {% endfor %}
+</section>
