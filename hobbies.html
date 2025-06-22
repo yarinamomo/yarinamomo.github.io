@@ -1,4 +1,6 @@
 ---
+layout: default
+title: Hobbies
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +12,6 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 0 2rem 2rem 2rem; /* top=0, right=2rem, bottom=2rem, left=2rem */
       background: #fafafa;
     }
 
@@ -56,18 +57,19 @@
 <body>
   {% include nav.html %}
 
-  <h1>My Drawings</h1>
+  <div class="content-wrapper" style="padding: 2rem;">
+    <h1>My Drawings</h1>
+    <div class="gallery">
+      <figure style="text-align:center; margin: 1rem;">
+        <img src="./images/hobbies/boat_hugo.JPG" alt="Colored pencil of boat Kim" />
+        <figcaption>Colored pencil of boat Kim</figcaption>
+      </figure>
 
-  <div class="gallery">
-    <figure style="text-align:center; margin: 1rem;">
-      <img src="./images/hobbies/boat_hugo.JPG" alt="Colored pencil of boat Kim" />
-      <figcaption>Colored pencil of boat Kim</figcaption>
-    </figure>
-
-    <figure style="text-align:center; margin: 1rem;">
-      <img src="./images/hobbies/liilarisholman.JPG" alt="Colored pencil of a red stuga on Lilla Risholman" />
-      <figcaption>Colored pencil of a red stuga on Lilla Risholman</figcaption>
-    </figure>
+      <figure style="text-align:center; margin: 1rem;">
+        <img src="./images/hobbies/liilarisholman.JPG" alt="Colored pencil of a red stuga on Lilla Risholman" />
+        <figcaption>Colored pencil of a red stuga on Lilla Risholman</figcaption>
+      </figure>
+    </div>
   </div>
 
 </body>
