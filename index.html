@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Something about Learning</title>
-  <link href="css/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -41,13 +41,7 @@
     <img src="./images/profile.jpg" class="profile" alt="" />
     <h1>Yiran Wang</h1>
     <p>Researcher | Software Engineering | Machine Learning | Blogging</p>
-    <div id="navbar"></div>
-    <script>
-      fetch('./nav.html')
-        .then(res => res.text())
-        .then(html => document.getElementById('navbar').innerHTML = html)
-        .catch(err => console.error('Error loading navbar:', err));
-    </script>
+    {% include nav.html %}
   </header>
 
   <section>

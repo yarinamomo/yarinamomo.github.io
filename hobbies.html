@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
   <title>My Hobbies</title>
   <style>
     body {
@@ -53,14 +53,7 @@
 
 <body>
 
-  <div id="navbar"></div>
-
-  <script>
-    fetch('./nav.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('navbar').innerHTML = html)
-      .catch(err => console.error('Error loading navbar:', err));
-  </script>
+  {% include nav.html %}
 
   <h1>My Drawings</h1>
 

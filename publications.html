@@ -2,18 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
   <title>Publications</title>
 </head>
 <body>
-  <div id="navbar"></div>
-
-  <script>
-    fetch('./nav.html')
-      .then(res => res.text())
-      .then(html => document.getElementById('navbar').innerHTML = html)
-      .catch(err => console.error('Error loading navbar:', err));
-  </script>
+  {% include nav.html %}
 
   <section style="padding:2rem;">
     <h2>Publications</h2>
