@@ -1,41 +1,60 @@
 ---
-layout: default
-title: Something about Learning
-extra_head: |
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 2rem;
-    background: #fafafa;
-  }
-
-  header {
-    text-align: center;
-    padding-bottom: 2rem;
-  }
-
-  img.profile {
-    width: 150px;
-    border-radius: 50%;
-  }
-
-  section {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem;
-  }
-
-  h1,
-  h2 {
-    color: #333;
-  }
-</style>
 ---
-<section>
-  <h2>About Me</h2>
-  <p>Yiran Wang received her Master’s degree in Statistics and Machine Learning from Linköping University, where she
-    is currently pursuing a PhD degree in Computer Science within the Wallenberg AI, Autonomous Systems, and Software
-    Program (WASP). Her research focuses on the quality of machine learning code, using software engineering
-    techniques and large language models, with a particular emphasis on machine learning applications developed in
-    Jupyter notebooks.</p>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Something about Learning</title>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #fafafa;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 2rem;
+    }
+
+    img.profile {
+      width: 150px;
+      border-radius: 50%;
+    }
+
+    section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    h1,
+    h2 {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <img src="./images/profile.jpg" class="profile" alt="" />
+    <h1>Yiran Wang</h1>
+    <p>Researcher | Software Engineering | Machine Learning | Blogging</p>
+    {% include nav.html %}
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>Yiran Wang received her Master’s degree in Statistics and Machine Learning from Linköping University, where she
+      is currently pursuing a PhD degree in Computer Science within the Wallenberg AI, Autonomous Systems, and Software
+      Program (WASP). Her research focuses on the quality of machine learning code, using software engineering
+      techniques and large language models, with a particular emphasis on machine learning applications developed in
+      Jupyter notebooks.</p>
+  </section>
+
+</body>
+
+</html>

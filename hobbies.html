@@ -1,62 +1,75 @@
 ---
-layout: default
-title: My Hobbies
-extra_head: |
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #fafafa;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
-  /* Gallery container */
-  .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  .gallery figure {
-    width: auto;
-    /* let width be flexible */
-    text-align: center;
-    /* optionally, set a max-width if you want */
-    /* max-width: 420px; */
-  }
-
-  .gallery img {
-    height: 300px;
-    /* fixed height for all */
-    width: auto;
-    /* width adjusts to keep aspect ratio */
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-  }
-
-  .gallery figcaption {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-  }
-</style>
 ---
-<div class="content-wrapper" style="padding: 2rem;">
-  <h1>My Drawings</h1>
-  <div class="gallery">
-    <figure style="text-align:center; margin: 1rem;">
-      <img src="./images/hobbies/boat_hugo.JPG" alt="Colored pencil of boat Kim" />
-      <figcaption>Colored pencil of boat Kim</figcaption>
-    </figure>
+<!DOCTYPE html>
+<html lang="en">
 
-    <figure style="text-align:center; margin: 1rem;">
-      <img src="./images/hobbies/liilarisholman.JPG" alt="Colored pencil of a red stuga on Lilla Risholman" />
-      <figcaption>Colored pencil of a red stuga on Lilla Risholman</figcaption>
-    </figure>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
+  <title>My Hobbies</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    /* Gallery container */
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .gallery figure {
+      width: auto;
+      /* let width be flexible */
+      text-align: center;
+      /* optionally, set a max-width if you want */
+      /* max-width: 420px; */
+    }
+
+    .gallery img {
+      height: 300px;
+      /* fixed height for all */
+      width: auto;
+      /* width adjusts to keep aspect ratio */
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .gallery figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  {% include nav.html %}
+
+  <div class="content-wrapper" style="padding: 2rem;">
+    <h1>My Drawings</h1>
+    <div class="gallery">
+      <figure style="text-align:center; margin: 1rem;">
+        <img src="./images/hobbies/boat_hugo.JPG" alt="Colored pencil of boat Kim" />
+        <figcaption>Colored pencil of boat Kim</figcaption>
+      </figure>
+
+      <figure style="text-align:center; margin: 1rem;">
+        <img src="./images/hobbies/liilarisholman.JPG" alt="Colored pencil of a red stuga on Lilla Risholman" />
+        <figcaption>Colored pencil of a red stuga on Lilla Risholman</figcaption>
+      </figure>
+    </div>
   </div>
-</div>
+
+</body>
+
+</html>
