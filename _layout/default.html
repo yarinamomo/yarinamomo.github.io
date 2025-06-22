@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css" />
+  
+  {% if page.extra_head %}
+    {{ page.extra_head }}
+  {% endif %}
+</head>
+
+<body>
+  {% include nav.html %}
+  <main>
+    {{ content }}
+  </main>
+</body>
+</html>
