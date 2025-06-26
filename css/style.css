@@ -1,7 +1,40 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background: #fafafa;
+}
+
+header {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+header.hero {
+  background: linear-gradient(135deg, #6BCB77, #4D96FF);
+  color: white;
+  padding: 4em 1em;
+  text-align: center;
+}
+
+img.profile {
+  width: 150px;
+  border-radius: 50%;
+}
+
+section.front {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+h2 {
+  color: #333;
 }
 
 nav {
@@ -23,17 +56,12 @@ nav a {
 }
 
 nav a:hover {
-  color: #6bfd66;  /* lime green */
+  color: #6bfd66;
+  /* lime green */
   transform: scale(1.1);
   text-shadow: 0 0 1px #32cd32;
 }
 
-header.hero {
-  background: linear-gradient(135deg, #6BCB77, #4D96FF);
-  color: white;
-  padding: 4em 1em;
-  text-align: center;
-}
 
 section {
   padding: 2em 1em;
@@ -41,4 +69,35 @@ section {
   margin: 0 auto;
 }
 
-/* etc for blog cards, hobby gallery... */
+/* Gallery container */
+.content-wrapper .gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.content-wrapper .gallery figure {
+  width: auto;
+  /* let width be flexible */
+  text-align: center;
+  /* optionally, set a max-width if you want */
+  /* max-width: 420px; */
+}
+
+.content-wrapper .gallery img {
+  height: 300px;
+  /* fixed height for all */
+  width: auto;
+  /* width adjusts to keep aspect ratio */
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.content-wrapper .gallery figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}

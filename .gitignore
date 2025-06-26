@@ -2,3 +2,9 @@
 .Rhistory
 *.log
 .deploy*/
+_site/
+.jekyll-cache/
+*.gem
+.bundle/
+vendor/
+node_modules/
