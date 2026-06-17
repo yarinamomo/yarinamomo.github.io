@@ -59,5 +59,5 @@ docker build -t my-jekyll-site .
 docker run --rm -it -p 4000:4000 -v C:\Users\yirwa29\Downloads\GitHubPage_Yiran\yarinamomo.github.io:/srv/jekyll my-jekyll-site
 
 # then visit in the browser:
-http://localhost:4000/yarinamomo.github.io/index.html
+http://localhost:4000/
 ```
