@@ -1,6 +1,5 @@
-<nav>
-  <a href="{{ site.baseurl }}/index.html">Home</a>
-  <a href="{{ site.baseurl }}/publications.html">Publications</a>
-  <!-- <a href="{{ site.baseurl }}/blogs/index.html">Blogs</a> -->
-  <a href="{{ site.baseurl }}/hobbies.html">Hobbies</a>
+<nav class="site-nav" aria-label="Primary">
+  {% for item in site.data.nav %}
+  <a class="site-nav__link{% if page.url == item.url %} is-active{% endif %}" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+  {% endfor %}
 </nav>

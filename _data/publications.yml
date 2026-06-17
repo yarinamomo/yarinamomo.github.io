@@ -1,0 +1,34 @@
+- authors: "Yiran Wang and Jakob Hoffmann and Jürgen Cito and Dániel Varró"
+  year: 2026
+  title: "Beyond Crash Resolution: Evaluating LLM Agents for Repairing Machine Learning Notebooks."
+  details: "Submitted."
+
+- authors: "Yiran Wang and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
+  year: 2026
+  title: "CRANE-LLM: Runtime-Augmented LLMs for Crash Prediction and Diagnosis in ML Notebooks."
+  details: "Submitted."
+  doi_url: "https://arxiv.org/abs/2602.18537"
+  doi_label: "doi: 10.48550/arXiv.2602.18537"
+
+- authors: "Yiran Wang and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
+  year: 2026
+  title: "JunoBench: A Benchmark Dataset of Crashes in Python Machine Learning Jupyter Notebooks."
+  venue: "Accepted to AIWARE 2026 (co-located with FSE),"
+  details: "July 6-7, 2026, Montreal, Canada."
+  doi_url: "https://arxiv.org/abs/2510.18013"
+  doi_label: "doi: 10.48550/arXiv.2510.18013"
+
+- authors: "Yiran Wang and Willem Meijer and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
+  year: 2025
+  title: "Why do Machine Learning Notebooks Crash? An Empirical Study on Public Python Jupyter Notebooks."
+  venue: "in IEEE Transactions on Software Engineering."
+  doi_url: "https://doi.org/10.1109/TSE.2025.3574500"
+  doi_label: "doi: 10.1109/TSE.2025.3574500"
+
+- authors: "Yiran Wang and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
+  year: 2024
+  title: "Using Run-time Information to Enhance Static Analysis of Machine Learning Code in Notebooks."
+  venue: "In Companion Proceedings of the 32nd ACM International Conference on the Foundations of Software Engineering (FSE'24),"
+  details: "July 15-19, 2024, Ipojuca (Pernambuco), Brazil."
+  doi_url: "https://doi.org/10.1145/3663529.3663785"
+  doi_label: "doi: 10.1145/3663529.3663785"

@@ -3,6 +3,11 @@ body {
   margin: 0;
   padding: 0;
   background: #fafafa;
+  color: #222;
+}
+
+.site-main {
+  padding: 0 1rem 2rem;
 }
 
 header {
@@ -10,9 +15,9 @@ header {
   padding-bottom: 2rem;
 }
 
-header.hero {
-  background: linear-gradient(135deg, #6BCB77, #4D96FF);
-  color: white;
+.hero {
+  background: #fff;
+  color: #222;
   padding: 4em 1em;
   text-align: center;
 }
@@ -22,6 +27,7 @@ img.profile {
   border-radius: 50%;
 }
 
+.content-wrapper,
 section.front {
   max-width: 800px;
   margin: 0 auto;
@@ -37,16 +43,17 @@ h2 {
   color: #333;
 }
 
-nav {
+.site-nav {
   background: linear-gradient(90deg, #fd5b32 0%, #f0ff8e 100%);
   padding: 1rem 2rem;
   text-align: center;
   border-radius: 10px;
   box-shadow: 4px 6px 4px rgba(254, 180, 123, 0.6);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 1rem;
 }
 
-nav a {
+.site-nav__link {
   color: #fff;
   margin: 0 1.2rem;
   font-weight: 600;
@@ -55,9 +62,9 @@ nav a {
   transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-nav a:hover {
+.site-nav__link:hover,
+.site-nav__link.is-active {
   color: #6bfd66;
-  /* lime green */
   transform: scale(1.1);
   text-shadow: 0 0 1px #32cd32;
 }
@@ -83,28 +90,22 @@ section {
 }
 
 
-/* Gallery container */
 .content-wrapper .gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
 .content-wrapper .gallery figure {
-  width: auto;
-  /* let width be flexible */
   text-align: center;
-  /* optionally, set a max-width if you want */
-  /* max-width: 420px; */
+  margin: 0;
 }
 
 .content-wrapper .gallery img {
-  height: 300px;
-  /* fixed height for all */
-  width: auto;
-  /* width adjusts to keep aspect ratio */
+  width: 100%;
+  max-width: 360px;
+  height: auto;
   border-radius: 8px;
   display: block;
   margin: 0 auto;
@@ -115,3 +116,165 @@ section {
   font-size: 0.9rem;
   color: #555;
 }
+
+.publication-list {
+  padding-left: 1.25rem;
+}
+
+.publication-list li + li {
+  margin-top: 1rem;
+}
+
+/* CV GENERATOR START */
+.cv-page {
+    max-width: 800px;
+    line-height: 1.6;
+}
+
+.cv-header {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1.25rem;
+    align-items: center;
+    text-align: left;
+}
+
+.cv-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.cv-header h1,
+.cv-header p {
+    margin: 0;
+    text-align: left;
+}
+
+.cv-header p {
+    color: #555;
+}
+
+.cv-header h1 {
+    font-size: 1.25rem;
+    line-height: 1.2;
+}
+
+.cv-header p {
+    font-size: 0.95rem;
+}
+
+.cv-contact {
+    margin-top: 0.4rem;
+    color: #555;
+}
+
+.cv-section {
+    margin-top: 2rem;
+    padding: 1.25rem 1.35rem;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04);
+}
+
+.cv-section h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.cv-list,
+.cv-bullets,
+.cv-publications {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.cv-timeline {
+    list-style: none;
+    padding-left: 0;
+}
+
+.cv-timeline li {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid #f0f0f0;
+}
+
+.cv-timeline li:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.cv-date {
+    font-weight: 700;
+    color: #6b4e16;
+}
+
+.cv-timeline strong,
+.cv-publications strong {
+    color: #222;
+}
+
+.cv-timeline p,
+.cv-publications div,
+.cv-bullets li {
+    margin: 0;
+}
+
+.cv-publications li {
+    line-height: 1.55;
+}
+
+.cv-publications li + li {
+    margin-top: 1rem;
+}
+
+.cv-bullets li + li {
+    margin-top: 0.85rem;
+}
+
+.cv-publications li strong,
+.cv-bullets strong {
+    display: inline;
+}
+
+.cv-publications a {
+    white-space: nowrap;
+}
+
+.cv-section a {
+    color: #8a4d08;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+}
+
+.cv-section a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+    .cv-header {
+        text-align: center;
+    }
+
+    .cv-timeline li {
+        grid-template-columns: 1fr;
+    }
+
+    .cv-date {
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+}
+/* CV GENERATOR END */

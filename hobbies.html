@@ -1,52 +1,17 @@
 ---
+layout: default
+title: My Hobbies
+body_class: hobbies
 ---
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css">
-  <title>My Hobbies</title>
-</head>
-
-<body>
-  {% include nav.html %}
-
-  <div class="content-wrapper" style="padding: 2rem;">
-    <h1>My Drawings</h1>
-    <div class="gallery">
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/boat_hugo.JPG" alt="Colored pencil of boat Kim" />
-        <figcaption>Colored pencil of the boat Kim</figcaption>
-      </figure>
-
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/lillarisholmen.png" alt="Colored pencil of a red stuga on Lilla Risholmen" />
-        <figcaption>Colored pencil of a red stuga on Lilla Risholmen</figcaption>
-      </figure>
-
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/lighttower.JPG" alt="Colored pencil of a light tower on the west coast of Sweden" />
-        <figcaption>Colored pencil of the light house Hättan on the west coast of Sweden</figcaption>
-      </figure>
-
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/muta.jpg" alt="Carbon-pen and pencil of the Yingxian Wooden Pagoda in China" />
-        <figcaption>Carbon-pen and pencil of the Yingxian Wooden Pagoda in Shanxi, China</figcaption>
-      </figure>
-
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/scream.jpg" alt="A pencil study of Munchs The Scream" />
-        <figcaption>A pencil study of Munch’s The Scream</figcaption>
-      </figure>
-
-      <figure style="text-align:center; margin: 1rem;">
-        <img src="./images/hobbies/baicai.jpg" alt="Pencil sketch of a Chinese cabbage" />
-        <figcaption>Pencil sketch of a Chinese cabbage</figcaption>
-      </figure>
-    </div>
+<section class="content-wrapper">
+  <h1>My Drawings</h1>
+  <div class="gallery">
+    {% for drawing in site.data.hobbies %}
+    <figure>
+      <img src="{{ drawing.image | relative_url }}" alt="{{ drawing.alt }}" />
+      <figcaption>{{ drawing.caption }}</figcaption>
+    </figure>
+    {% endfor %}
   </div>
-
-</body>
-
-</html>
+</section>

@@ -3,17 +3,22 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }}</title>
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/style.css" />
+  <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
 
   {% if page.extra_head %}
   {{ page.extra_head }}
   {% endif %}
 </head>
 
-<body>
+<body class="{{ page.body_class | default: '' }}">
+  {% unless page.body_class == 'home' %}
   {% include nav.html %}
-  {{ content }}
+  {% endunless %}
+  <main class="site-main">
+    {{ content }}
+  </main>
 </body>
 
 </html>
