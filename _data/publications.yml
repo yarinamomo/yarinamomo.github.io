@@ -32,3 +32,11 @@
   details: "July 15-19, 2024, Ipojuca (Pernambuco), Brazil."
   doi_url: "https://doi.org/10.1145/3663529.3663785"
   doi_label: "doi: 10.1145/3663529.3663785"
+
+- authors: "Yiran Wang"
+  year: 2023
+  title: "Early Detection of Defects in Machine Learning Programs by Semi-Static Analysis."
+  venue: "The 38th IEEE/ACM International Conference on Automated Software Engineering (ASE 2023) - Doctoral Forum,"
+  details: "11 - 15 September 2023, Kirchberg, Luxembourg."
+  doi_url: "https://doi.org/10.5281/zenodo.20793551"
+  doi_label: "doi: 10.5281/zenodo.20793551"
