@@ -13,10 +13,10 @@
 - authors: "Yiran Wang and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
   year: 2026
   title: "JunoBench: A Benchmark Dataset of Crashes in Python Machine Learning Jupyter Notebooks."
-  venue: "Accepted to AIWARE 2026 (co-located with FSE),"
-  details: "July 6-7, 2026, Montreal, Canada."
-  doi_url: "https://arxiv.org/abs/2510.18013"
-  doi_label: "doi: 10.48550/arXiv.2510.18013"
+  venue: "Proceedings of the 3rd ACM International Conference on AI-Powered Software (AIware '26),"
+  details: "July 6-7, 2026, Montreal, QC, Canada."
+  doi_url: "https://doi.org/10.1145/3805760.3814934"
+  doi_label: "doi: 10.1145/3805760.3814934"
 
 - authors: "Yiran Wang and Willem Meijer and José Antonio Hernández López and Ulf Nilsson and Dániel Varró"
   year: 2025
