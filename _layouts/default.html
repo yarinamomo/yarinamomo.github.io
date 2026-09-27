@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ page.title }}</title>
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}" />
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}" />
 
   {% if page.extra_head %}
@@ -13,6 +14,7 @@
 </head>
 
 <body class="{{ page.body_class | default: '' }}">
+  {% comment %}The home page places the nav itself, below the hero (see index.html).{% endcomment %}
   {% unless page.body_class == 'home' %}
   {% include nav.html %}
   {% endunless %}

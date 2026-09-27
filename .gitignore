@@ -4,7 +4,10 @@
 .deploy*/
 _site/
 .jekyll-cache/
+.jekyll-metadata
 *.gem
 .bundle/
 vendor/
 node_modules/
+__pycache__/
+*.pyc

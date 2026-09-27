@@ -1,1 +1,24 @@
+# Site settings (restart `jekyll serve` after editing this file)
+title: Yiran Wang
+description: Ph.D. student in Computer Science at Linköping University, working on the quality of machine learning code.
+url: "https://yarinamomo.github.io"
 baseurl: ""
+
+# Blog posts in _posts/ use the post layout without needing it in their front matter.
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+# Files that are part of the repository but not of the website.
+exclude:
+  - README.md
+  - Dockerfile
+  - scripts/
+  - .vscode/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - node_modules/

@@ -1,13 +1,16 @@
 ---
 layout: default
 title: Blogs
+body_class: blogs
 ---
-<section>
+
+<section class="content-wrapper post-list">
+  <h1>Blogs</h1>
   {% for post in site.posts %}
-    <article>
-      <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-      <p>{{ post.excerpt }}</p>
-      <small>{{ post.date | date: "%B %d, %Y" }}</small>
-    </article>
+  <article>
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    <p>{{ post.excerpt | strip_html | truncatewords: 60 }}</p>
+    <small>{{ post.date | date: "%B %-d, %Y" }}</small>
+  </article>
   {% endfor %}
 </section>

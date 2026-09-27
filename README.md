@@ -1,63 +1,86 @@
 # My Personal GitHub Page
 
-This repository contains the source for my GitHub Page site published at https://yarinamomo.github.io/.
+Source for my site at https://yarinamomo.github.io/. GitHub Pages builds it with Jekyll on every push to `main`.
 
-## How to update the site
-This site is organized using a Jekyll-style layout. Key places to edit site-wide layout and styles are shown as follows.
+## Where things are
 
-### General settings (layout, style, etc):
-- `/_layouts/default.html`: the base HTML layout used by most pages. Modify header/footer wrappers and where the site nav is inserted.
-- `/_includes/`: reusable fragments (for example `nav.html`) that are included into layouts and pages.
-- `/css/style.css`: global styles. Note there is a generator-managed block between `/* CV GENERATOR START */` and `/* CV GENERATOR END */` — the CV generator will overwrite that block when it runs.
-- `/_data/nav.yml`: controls the navigation entries. Edit this to add/remove top-level nav items (e.g., the `CV` entry).
-- Front matter: pages use YAML front matter at the top (e.g., `layout`, `title`, `body_class`). Changing `body_class` is used by the layout to apply page-specific behaviors (for example the home page centers the nav).
+| To change…                     | Edit                                                        |
+| ------------------------------ | ----------------------------------------------------------- |
+| Home page text, links          | `index.html`                                                |
+| Profile photo                  | replace `images/profile.jpg` (keep the name)                |
+| CV page, Publications page     | the Overleaf project, then regenerate (see below)           |
+| Hobbies gallery                | `_data/hobbies.yml` + images in `images/hobbies/`           |
+| Navigation bar                 | `_data/nav.yml`                                             |
+| Blog posts                     | `_posts/YYYY-MM-DD-title.md` (listed on `/blogs.html`)      |
+| Styles (all pages)             | `css/style.css`                                             |
+| Page wrapper (`<head>`, nav)   | `_layouts/default.html`, `_includes/nav.html`               |
+| Site title / description       | `_config.yml`                                               |
 
-### Home page
-`index.html` (root) contains the hero section and is marked with `body_class: home` in its front matter. The home page differs from inner pages:
-- Hero content (the big header area) lives in `index.html`; edit the title, subheading, and description there.
-- The home page deliberately places the site navigation below the hero. If you need to change nav placement, update `/_layouts/default.html` or `index.html` where the nav is included.
-- Profile image: the avatar used on the site is `images/profile.jpg`. Replace that file with your updated photo (keep the same name) and re-run the CV generator if you want the CV header to pick it up.
-- Small visual changes (spacing, fonts) are usually in `css/style.css` — prefer local tweaks there rather than changing many templates.
+Pages start with YAML front matter (`layout`, `title`, `body_class`). `body_class: home` is special: the layout then
+leaves out the nav, because `index.html` places it below the hero itself.
 
-### Publication page:
-Data is in `/_data/publications.yml` and the page template is `publications.html`. 
+### Add a publication
 
-How to add a publication:
+Publications have one source: `own-bib.bib` in the Overleaf CV. Add the entry there plus a `\nocite{key}` in
+`publications.tex` (the `\nocite` order is the display order), then regenerate as described under
+[Updating the CV](#updating-the-cv). This updates the PDF, `cv.html` and `publications.html` together.
 
-1. Add an entry to `/_data/publications.yml` with the desired fields.
-2. Optionally add a `url` or `doi` — the template will show a link only if present.
-3. Save and preview the site locally.
+### Add a drawing
 
-### Hobbies page:
-Data is in `/_data/hobbies.yml` and the page template is `hobbies.html`.
+Put the image in `images/hobbies/` and add to `_data/hobbies.yml`:
 
-How to add a hobby entry:
-
-1. Add a YAML entry to `_data/hobbies.yml` with `title`, `description`, and optional `image`.
-2. Place the image under `images/hobbies/` and reference its filename from the YAML.
-
-### CV page
-The CV page is generated from an Overleaf / LaTeX project (a `.zip` export) into a native HTML page. The generator script does two things:
-
-1. Converts the LaTeX source (sections like `education.tex`, `employment.tex`, `publications.tex`) into `cv.html`.
-2. Rewrites the CV-specific CSS block in `css/style.css` (the code between `/* CV GENERATOR START */` and `/* CV GENERATOR END */`).
-
-Usage:
-
-```bash
-# from the repository root
-python scripts/generate_cv.py
+```yaml
+- image: /images/hobbies/my-drawing.jpg   # file names are case-sensitive on GitHub Pages
+  alt: Short description for screen readers
+  caption: Caption shown under the image
 ```
 
-## Testing locally with Docker (Windows)
+### Add a blog post
+
+Create `_posts/YYYY-MM-DD-some-title.md` with front matter `title:` (and optionally `tags:`). The post layout is applied
+automatically. Put its images in `images/<post-name>/` and reference them as
+`{{ '/images/<post-name>/file.png' | relative_url }}`. The blog page is `/blogs.html`; add it to `_data/nav.yml` to
+show it in the menu.
+
+## Updating the CV
+
+`cv.html` and `publications.html` are generated from the Overleaf LaTeX project, so the website always matches the
+PDF. Don't edit either file by hand; the next run overwrites them.
+
+1. In Overleaf: *Menu → Download → Source* and save the zip as `_data/CV.zip`.
+2. From the repository root, run (Python 3.8+, no packages needed):
+
+   ```bash
+   python scripts/generate_cv.py
+   ```
+
+3. Read any `warning:` lines, preview the site, and commit `_data/CV.zip`, `cv.html` and `publications.html`
+   together.
+
+What the generator reads:
+
+- **Header**: the name line and each `\makefield{icon}{content}` inside `\leftheader{...}`.
+- **Sections**: every `\makerubric{file}` / `\input{file}` between `\begin{document}` and `\end{document}`, in that
+  order. Adding a new `\makerubric{awards}` with an `awards.tex` rubric adds an Awards section automatically.
+- **Rubric files**: `\begin{rubric}{Title}` with `\entry*[date] text` items (`\par` starts a new paragraph) and optional
+  `\subrubric{Heading}`.
+- **Publications** (CV section and the Publications page): the file with `\printbibliography`; entries come from the
+  `\addbibresource` file in `\nocite` order (`\nocite{*}` = file order).
+  `\printbibliography[type=article, title={Journal Articles}]` style splits are supported.
+
+LaTeX it doesn't know is reported as a warning (the text is kept, the command dropped). To use a different source:
+`python scripts/generate_cv.py --source path/to/folder-or.zip --output cv.html --publications-output publications.html`.
+
+## Preview locally with Docker
+
+The Docker image uses the same Jekyll version as GitHub Pages. From the repository root in PowerShell:
 
 ```powershell
-# build the image
+# once (and after editing the Dockerfile)
 docker build -t my-jekyll-site .
 
-# run the container and mount the local folder so changes appear immediately
-docker run --rm -it -p 4000:4000 -v C:\Users\yirwa29\Downloads\GitHubPage_Yiran\yarinamomo.github.io:/srv/jekyll my-jekyll-site
-
-# then visit in the browser:
-http://localhost:4000/
+# every time; pages rebuild when you save
+docker run --rm -it -p 4000:4000 -p 35729:35729 -v "${PWD}:/srv/jekyll" my-jekyll-site
 ```
+
+Then open http://localhost:4000/. Changes to `_config.yml` need a restart (Ctrl+C, run again).

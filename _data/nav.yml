@@ -1,5 +1,7 @@
+# Top navigation. `url` must match the page's URL for the active highlight to work
+# (the home page's URL is "/", other pages are "/<file>.html").
 - title: Home
-  url: /index.html
+  url: /
 - title: CV
   url: /cv.html
 - title: Publications

@@ -1,14 +1,12 @@
-# Use the official Jekyll image
-FROM jekyll/jekyll:4
+# Local preview with the same Jekyll version and plugins that GitHub Pages uses.
+FROM ruby:3.3
 
-# install webrick
-RUN gem install webrick
+RUN gem install github-pages webrick --no-document
 
-# Set working directory inside the container
 WORKDIR /srv/jekyll
 
-# Expose the default port
-EXPOSE 4000
+# 4000: the site, 35729: live reload
+EXPOSE 4000 35729
 
-# Run the development server on container start
-CMD ["jekyll", "serve", "--host", "0.0.0.0", "--livereload"]
+# --force_polling: file-change events do not cross a Windows bind mount, so poll for changes instead.
+CMD ["jekyll", "serve", "--host", "0.0.0.0", "--livereload", "--force_polling"]
